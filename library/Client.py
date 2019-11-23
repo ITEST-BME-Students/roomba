@@ -7,8 +7,8 @@ import os
 import errno
 import time
 import easygui
+import json
 from library import Misc
-
 
 def read_filelist():
     current_dir = os.path.dirname(__file__)
@@ -57,8 +57,8 @@ class Client:
 
         if self.run_locally:
             self.remote = 'localhost'
-            self.remote_python = '/home/dieter/anaconda3/envs/default/bin/python'
-            self.remote_dir = '/home/dieter/Desktop/testing/'
+            self.remote_python = '/home/dieter/anaconda3/envs/roomba/bin/python'
+            self.remote_dir = '/home/dieter/Desktop/server/'
             self.remote_script = 'start_server.py'
             self.local_dir = os.getcwd()
             self.user = 'dieter'
@@ -93,6 +93,34 @@ class Client:
         command = Misc.lst2command(arguments)
         reply = self.send_command(command, 10000)
         self.print_log([reply])
+
+    def send_raw_command(self, command):
+        reply = self.send_command(command, 10001)
+        return reply
+
+    ##################################
+    # BUILD RAW COMMANDS
+    ##################################
+    def set_motors(self, left, right):
+        command = ['M', left, right]
+        command = Misc.lst2command(command, end_character=False)
+        result = self.send_raw_command(command)
+        return result
+
+    def set_display(self, text):
+        command = ['D', text]
+        command = Misc.lst2command(command, end_character=False)
+        result = self.send_raw_command(command)
+        return result
+
+    def get_sensors(self):
+        result = self.send_raw_command('S')
+        result = json.loads(result)
+        return result
+
+    def reset(self):
+        result = self.send_raw_command('R')
+        return result
 
     ##################################
     # SUPPORT FUNCTIONS
@@ -212,7 +240,3 @@ class Client:
             if not self.remote_folder_exists(remote_dir): self.sftp.mkdir(remote_dir)
             self.sftp.put(local_file, remote_file)
             if verbose: print(local_file, '---->', remote_file)
-
-
-if __name__ == '__main__':
-    c = Client()

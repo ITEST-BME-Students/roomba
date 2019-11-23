@@ -6,6 +6,11 @@ import struct
 import time
 import pickle
 
+def constrain(value, min_value, max_value):
+    if value < min_value: return min_value
+    if value > max_value: return max_value
+    return value
+
 def timed_folder_name():
     name = time.asctime()
     for x in range(3): name = name.replace('  ', ' ')
@@ -197,11 +202,11 @@ def sign(x):
     if x == 0: return 0
 
 
-def lst2command(lst):
+def lst2command(lst, end_character='*'):
     command = ''
     for x in lst: command += str(x) + ','
     command = command.rstrip(',')
-    command += '*'
+    if end_character: command += end_character
     return command
 
 

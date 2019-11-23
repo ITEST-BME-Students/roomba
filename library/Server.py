@@ -5,6 +5,7 @@ import sys
 import threading
 import time
 from library import Misc
+from library import MyRoomba
 
 def default_function(*args):
     return args
@@ -40,12 +41,13 @@ class Server:
         self.print_log('Starting server at ' + host)
         self.print_log('Server working directory: ' + os.getcwd())
 
-
-
+        # Connect to robot
+        self.roomba = MyRoomba.MyRoomba()
 
         # Bind functions
         self.open_connection(12345, self.shutdown)
         self.open_connection(10000, bind_function=self.test_communiction)
+        self.open_connection(10001, bind_function=self.process_command)
 
     ########################################
     # ROBOT FUNCTIONS
@@ -55,6 +57,12 @@ class Server:
         if not type(args) == list: args = [args]
         print('Test Communication Function Arguments', args)
         return 'success'
+
+    def process_command(self, args):
+        if not type(args) == list: args = [args]
+        command = Misc.lst2command(args, end_character=False)
+        result = self.roomba.handle_roomba_text_command(command)
+        return result
 
     ########################################
     # SERVER FUNCTIONS
