@@ -6,6 +6,8 @@ import threading
 import time
 from library import Misc
 from library import MyRoomba
+from library import Logger
+import os
 
 def default_function(*args):
     return args
@@ -13,23 +15,7 @@ def default_function(*args):
 
 class Server:
     def __init__(self):
-        # create logger with
-        self.logger = logging.getLogger('server')
-        self.logger.setLevel(logging.INFO)
-        # create file handler which logs even debug messages
-        file_logger = logging.FileHandler('server.log', mode='w')
-        file_logger.setLevel(logging.INFO)
-        # create console handler with a higher log level
-        console_logger = logging.StreamHandler(sys.stdout)
-        console_logger.setLevel(logging.INFO)
-        # create formatter and add it to the handlers
-        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-        file_logger.setFormatter(formatter)
-        console_logger.setFormatter(formatter)
-        # add the handlers to the logger
-        self.logger.addHandler(file_logger)
-        self.logger.addHandler(console_logger)
-
+        self.logger = Logger.Logger('Server')
         # some defaults
         self.break_character = '*'
 
@@ -47,22 +33,34 @@ class Server:
         # Bind functions
         self.open_connection(12345, self.shutdown)
         self.open_connection(10000, bind_function=self.test_communiction)
-        self.open_connection(10001, bind_function=self.process_command)
+        self.open_connection(10001, bind_function=self.toggle_server_logging)
+
+        self.open_connection(10010, bind_function=self.process_roomba_command)
 
     ########################################
     # ROBOT FUNCTIONS
     ########################################
-
     def test_communiction(self, args):
         if not type(args) == list: args = [args]
         print('Test Communication Function Arguments', args)
         return 'success'
 
-    def process_command(self, args):
+    # There is only function to handle input to the robot (and we're listening only on a single port)
+    # The reason for this is that the serial port to the robot can only accept 1 command at a time any way
+    def process_roomba_command(self, args):
         if not type(args) == list: args = [args]
         command = Misc.lst2command(args, end_character=False)
         result = self.roomba.handle_roomba_text_command(command)
         return result
+
+    ########################################
+    # SERVER COMM FUNCTIONS
+    ########################################
+    def toggle_server_logging(self, args):
+        if not type(args) == list: args = [args]
+        state = args[0] == 'True'
+        set_state = not state
+        self.logger.logger.disabled = set_state
 
     ########################################
     # SERVER FUNCTIONS

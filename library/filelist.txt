@@ -3,5 +3,6 @@ library/Server.py
 library/Misc.py
 library/MyRoomba.py
 library/Ports.py
+library/Logger.py
 start_server.py
 

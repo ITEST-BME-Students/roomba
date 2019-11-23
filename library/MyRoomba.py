@@ -2,6 +2,7 @@ from pycreate2 import Create2
 from library import Ports
 from library import Misc
 import json
+import time
 
 
 class MyRoomba:
@@ -19,6 +20,14 @@ class MyRoomba:
         # in mm/s. The order in the api is different
         self.robot.drive_direct(right_speed, left_speed)
 
+    def move(self, distance):  # in mm
+        # the robot command accepts distances in meters, so we need to convert
+        meter = distance / 1000
+        self.robot.drive_distance(meter, 100, True)
+
+    def turn(self, degrees):
+        self.turn_angle_alternative(degrees, 100)
+
     def set_display(self, text):
         text = str(text)
         text = text[0:4]
@@ -32,10 +41,30 @@ class MyRoomba:
         return sensors
 
     def set_leds(self, leds, color=0, intensity=0):
-        # check, dock, spot, debris
+        # leds is a string of 0's and 1's indicating withch LEDS to switch on.
+        # Order of leds: check, dock, spot, debris
+
         string_value = str(leds[0]) + str(leds[1]) + str(leds[2]) + str(leds[3])
         decimal = int(string_value, 2)
         self.robot.led(led_bits=decimal, power_color=color, power_intensity=intensity)
+
+    def turn_angle_alternative(self, angle, speed):
+        # This function is a reimplementation of the turn angle function in the icreate2 package
+        # The problem with the original function was that it did not stop the robot when done turning
+        # I did not want to edit the original function to avoid having to edit things every time I install the package from the web
+
+        turn_angle = 0.0
+        if angle > 0:
+            cmd = (speed, -speed)  # R, L
+        else:
+            cmd = (-speed, speed)
+            angle = -angle
+
+        while abs(turn_angle) < angle:
+            self.robot.drive_direct(*cmd)
+            sensors = self.robot.get_sensors()
+            turn_angle += sensors.angle  # roomba only tracks the delta angle
+        self.robot.drive_direct(0, 0)
 
     def handle_roomba_text_command(self, txt):
         txt = txt.replace(' ', '')
@@ -43,20 +72,31 @@ class MyRoomba:
         command = parts[0]
         command = command.upper()
         # MOTOR COMMAND
-        if command == 'M':
+        if command == 'MT':
             left = float(parts[1])
             right = float(parts[2])
             self.set_motors(left, right)
             return 'motors set'
         # SENSOR DATA
-        if command == 'S':
+        if command == 'SD':
             data = self.get_sensors()
             data = json.dumps(data)  # reading at the other side: json.loads(a)
             return data
         # SET DISPLAY
-        if command == 'D':
+        if command == 'DP':
             self.set_display(parts[1])
             return 'display set'
+        # MOVE DISTANCE
+        if command == 'MD':
+            distance = int(parts[1])
+            self.move(distance)
+            return 'moved'
+        # TURN DEGREES
+        if command == 'TD':
+            degrees = int(parts[1])
+            self.turn(degrees)
+            return 'turned'
+
 
 if __name__ == "__main__":
     roomba = MyRoomba()

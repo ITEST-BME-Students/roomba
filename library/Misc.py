@@ -5,6 +5,17 @@ import shutil
 import struct
 import time
 import pickle
+from os import system, name
+
+def clear_console():
+    # for windows
+    if name == 'nt':
+        _ = system('cls')
+
+        # for mac and linux(here, os.name is 'posix')
+    else:
+        _ = system('clear')
+
 
 def constrain(value, min_value, max_value):
     if value < min_value: return min_value

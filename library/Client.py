@@ -8,6 +8,8 @@ import errno
 import time
 import easygui
 import json
+import natsort
+from library import Logger
 from library import Misc
 
 def read_filelist():
@@ -24,24 +26,8 @@ def read_filelist():
 
 class Client:
     def __init__(self, do_upload=True, run_locally=False):
-        # create logger with
-        self.logger = logging.getLogger('client')
-        self.logger.setLevel(logging.INFO)
-        # create file handler which logs even debug messages
-        self.file_logger = logging.FileHandler('client.log', mode='w')
-        self.file_logger.setLevel(logging.INFO)
-        # create console handler with a higher log level
-        self.console_logger = logging.StreamHandler(sys.stdout)
-        self.console_logger.setLevel(logging.INFO)
-        # create formatter and add it to the handlers
-        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-        self.file_logger.setFormatter(formatter)
-        self.console_logger.setFormatter(formatter)
-        # add the handlers to the logger
-        self.logger.addHandler(self.file_logger)
-        self.logger.addHandler(self.console_logger)
+        self.logger = Logger.Logger('Client')
         self.run_locally = run_locally
-
         self.logging = False
         self.logfile = None
         self.__stop_loop = False
@@ -81,61 +67,6 @@ class Client:
         # Do Upload
         if do_upload: self.upload_files(verbose=True)
 
-    def __del__(self):
-        self.ssh.close()
-        self.sftp.close()
-
-    ##################################
-    # ROBOT CONTROL FUNCTIONS
-    ##################################
-    def test_communication(self, message=[]):
-        arguments = ['Test communication', 1, 2, 3] + message
-        command = Misc.lst2command(arguments)
-        reply = self.send_command(command, 10000)
-        self.print_log([reply])
-
-    def send_raw_command(self, command):
-        reply = self.send_command(command, 10001)
-        return reply
-
-    ##################################
-    # BUILD RAW COMMANDS
-    ##################################
-    def set_motors(self, left, right):
-        command = ['M', left, right]
-        command = Misc.lst2command(command, end_character=False)
-        result = self.send_raw_command(command)
-        return result
-
-    def set_display(self, text):
-        command = ['D', text]
-        command = Misc.lst2command(command, end_character=False)
-        result = self.send_raw_command(command)
-        return result
-
-    def get_sensors(self):
-        result = self.send_raw_command('S')
-        result = json.loads(result)
-        return result
-
-    def reset(self):
-        result = self.send_raw_command('R')
-        return result
-
-    ##################################
-    # SUPPORT FUNCTIONS
-    ##################################
-
-    # def start_logging(self, filename='client.log', erase=False):
-    #     # create file handler which logs even debug messages
-    #     mode = 'a'
-    #     if erase: mode = 'w'
-    #     self.file_logger = logging.FileHandler(filename, mode=mode)
-    #     self.file_logger.setLevel(logging.INFO)
-    #     formatter = logging.Formatter('%(asctime)s - %(cluttered_name)s - %(levelname)s - %(message)s')
-    #     self.file_logger.setFormatter(formatter)
-    #     self.logger.addHandler(self.file_logger)
-
     def stop_logging(self):
         self.file_logger.close()
 
@@ -145,6 +76,83 @@ class Client:
         if level == 'i': self.logger.info(text)
         if level == 'w': self.logger.warning(text)
         if level == 'c': self.logger.critical(text)
+
+    def __del__(self):
+        self.ssh.close()
+        self.sftp.close()
+
+    ##################################
+    # SERVER CONTROL FUNCTIONS
+    ##################################
+    def test_communication(self, message=[]):
+        arguments = ['Test communication', 1, 2, 3] + message
+        command = Misc.lst2command(arguments)
+        reply = self.send_command(command, 10000)
+        self.print_log([reply])
+
+    def toggle_logging(self, state=True):
+        #This disables/enables the logging for both the server and the client
+        self.logger.logger.disabled = not state
+        reply = self.send_command(str(state), 10001)
+        self.print_log([reply])
+
+    ##################################
+    # ROBOT CONTROL FUNCTIONS
+    ##################################
+
+    def send_raw_command(self, command):
+        reply = self.send_command(command, 10010)
+        return reply
+
+    ##################################
+    # BUILD RAW COMMANDS FOR THE ROOMBA
+    ##################################
+    def set_motors(self, left, right):
+        command = ['MT', left, right]
+        command = Misc.lst2command(command, end_character=False)
+        result = self.send_raw_command(command)
+        return result
+
+    def set_display(self, text):
+        command = ['DP', text]
+        command = Misc.lst2command(command, end_character=False)
+        result = self.send_raw_command(command)
+        return result
+
+    def get_sensors(self, disable_server_logging=False):
+        result = self.send_raw_command('SD')
+        result = json.loads(result)
+        return result
+
+    def move(self, distance):
+        distance = int(distance)
+        command = ['MD', distance]
+        command = Misc.lst2command(command, end_character=False)
+        result = self.send_raw_command(command)
+        return result
+
+    def turn(self, degrees):
+        degrees = int(degrees)
+        command = ['TD', degrees]
+        command = Misc.lst2command(command, end_character=False)
+        result = self.send_raw_command(command)
+        return result
+
+    ##################################
+    # SUPPORT FUNCTIONS
+    ##################################
+    def formatted_sensor_data(self):
+        text=''
+        self.logger.logger.disabled = True
+        data = self.get_sensors()
+        self.logger.logger.disabled = False
+        keys = data.keys()
+        keys = natsort.natsorted(keys)
+        for x in keys:
+            item = x.ljust(30, '.')
+            value = str(data[x])
+            text+=item+value+'\n'
+        return text
 
     ##################################
     # SERVER CONTROL FUNCTIONS
