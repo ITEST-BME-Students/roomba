@@ -4,7 +4,6 @@ from library import Misc
 import json
 import time
 
-
 class MyRoomba:
     def __init__(self, port=None):
         if port is None: port = Ports.get_port('FT231X')
@@ -98,6 +97,8 @@ class MyRoomba:
             return 'turned'
 
 
+
 if __name__ == "__main__":
     roomba = MyRoomba()
-    roomba.handle_roomba_text_command('M,0,0')
+    result = roomba.robot.reset()
+    print(result)

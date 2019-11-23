@@ -36,6 +36,7 @@ class Server:
         self.open_connection(10001, bind_function=self.toggle_server_logging)
 
         self.open_connection(10010, bind_function=self.process_roomba_command)
+        self.logger.info('Function binding completed')
 
     ########################################
     # ROBOT FUNCTIONS

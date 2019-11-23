@@ -9,8 +9,10 @@ import time
 import easygui
 import json
 import natsort
+import numpy
 from library import Logger
 from library import Misc
+from library import Kinematics
 
 def read_filelist():
     current_dir = os.path.dirname(__file__)
@@ -22,6 +24,19 @@ def read_filelist():
     new = []
     for x in files: new.append(x.rstrip('\n'))
     return new
+
+def get_bumper_data(sensor_data, binary=False):
+    a = sensor_data['light_bumper_left']
+    b = sensor_data['light_bumper_front_left']
+    c = sensor_data['light_bumper_center_left']
+    d = sensor_data['light_bumper_center_right']
+    e = sensor_data['light_bumper_front_right']
+    f = sensor_data['light_bumper_right']
+    analog_data = numpy.array([a, b, c, d, e, f])
+    binary_data = numpy.array(sensor_data['light_bumper'])
+    if binary: return binary_data
+    if not binary: return analog_data
+
 
 
 class Client:
@@ -119,7 +134,7 @@ class Client:
         result = self.send_raw_command(command)
         return result
 
-    def get_sensors(self, disable_server_logging=False):
+    def get_sensors(self):
         result = self.send_raw_command('SD')
         result = json.loads(result)
         return result
@@ -139,7 +154,7 @@ class Client:
         return result
 
     ##################################
-    # SUPPORT FUNCTIONS
+    # SUPPORT/SECONDARRY FUNCTIONS
     ##################################
     def formatted_sensor_data(self):
         text=''
@@ -153,6 +168,19 @@ class Client:
             value = str(data[x])
             text+=item+value+'\n'
         return text
+
+    def get_bumper_data(self, binary=False):
+        sensor_data = self.get_sensors()
+        bumper_data = get_bumper_data(sensor_data, binary)
+        return bumper_data
+
+    def set_velocty(self, linear, angular):
+        # linear: normalized +-1
+        # angular: degrees/sec
+        result = Kinematics.kinematics(linear, angular)
+        left_wheel_speed = result[0] / 500
+        right_wheel_speed = result[1] / 500
+        self.set_motors(left_wheel_speed, right_wheel_speed)
 
     ##################################
     # SERVER CONTROL FUNCTIONS
