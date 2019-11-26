@@ -219,6 +219,9 @@ class Client:
         self.print_log(['Stopping Remote Python'])
         a = stdout.read()
         b = stderr.read()
+        a = a.decode()
+        b = b.decode()
+        print(a,b)
         output = a + b
         output = output.replace('\n', '')
         self.print_log([output])
