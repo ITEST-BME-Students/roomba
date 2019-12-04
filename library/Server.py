@@ -4,9 +4,14 @@ import socket
 import sys
 import threading
 import time
+import json
 from library import Misc
 from library import MyRoomba
 from library import Logger
+
+sys.path.insert(0,'/home/pi/grove.py/grove')
+import adc_8chan_12bit
+
 import os
 
 def default_function(*args):
@@ -30,12 +35,16 @@ class Server:
         # Connect to robot
         self.roomba = MyRoomba.MyRoomba()
 
+        # connect to adc
+        self.adc = adc_8chan_12bit.Pi_hat_adc()
+
         # Bind functions
         self.open_connection(12345, self.shutdown)
         self.open_connection(10000, bind_function=self.test_communiction)
         self.open_connection(10001, bind_function=self.toggle_server_logging)
 
         self.open_connection(10010, bind_function=self.process_roomba_command)
+        self.open_connection(10011, bind_function=self.get_adc)
         self.logger.info('Function binding completed')
 
     ########################################
@@ -54,6 +63,15 @@ class Server:
         result = self.roomba.handle_roomba_text_command(command)
         return result
 
+    ########################################
+    # ADC FUNCTIONS
+    ########################################
+    def get_adc(self, args):
+        if not type(args) == list: args = [args]
+        #unit = 0.1 percent!!
+        result = self.adc.get_all_ratio_0_1_data()
+        result = json.dumps(result)
+        return result
     ########################################
     # SERVER COMM FUNCTIONS
     ########################################

@@ -48,13 +48,13 @@ class Client:
         self.__stop_loop = False
 
         if not self.run_locally:
-            self.remote = '192.168.0.109'
-            self.remote_python = '/home/batman/anaconda2/bin/python'
-            self.remote_dir = '/home/batman/Desktop/server/'
+            self.remote = '192.168.0.249'
+            self.remote_python = 'python3'
+            self.remote_dir = '/home/pi/Desktop/server/'
             self.remote_script = 'start_server.py'
             self.local_dir = os.getcwd()
-            self.user = 'batman'
-            self.password = 'robin'
+            self.user = 'pi'
+            self.password = 'raspberry'
 
         if self.run_locally:
             self.remote = 'localhost'
@@ -120,6 +120,17 @@ class Client:
         return reply
 
     ##################################
+    # ADC FUNCTIONS
+    ##################################
+
+    def get_adc(self):
+        reply = self.send_command('get_adc', 10011)
+        reply = json.loads(reply)
+        converted = []
+        for x in reply: converted.append(x*0.1) #to get percentage 0-100. Orginal data is in 0.1%
+        return converted
+
+    ##################################
     # BUILD RAW COMMANDS FOR THE ROOMBA
     ##################################
     def set_motors(self, left, right):
@@ -134,7 +145,7 @@ class Client:
         result = self.send_raw_command(command)
         return result
 
-    def get_sensors(self):
+    def get_roomba_sensors(self):
         result = self.send_raw_command('SD')
         result = json.loads(result)
         return result
@@ -159,7 +170,7 @@ class Client:
     def formatted_sensor_data(self):
         text=''
         self.logger.logger.disabled = True
-        data = self.get_sensors()
+        data = self.get_roomba_sensors()
         self.logger.logger.disabled = False
         keys = data.keys()
         keys = natsort.natsorted(keys)
@@ -170,7 +181,7 @@ class Client:
         return text
 
     def get_bumper_data(self, binary=False):
-        sensor_data = self.get_sensors()
+        sensor_data = self.get_roomba_sensors()
         bumper_data = get_bumper_data(sensor_data, binary)
         return bumper_data
 
@@ -221,7 +232,6 @@ class Client:
         b = stderr.read()
         a = a.decode()
         b = b.decode()
-        print(a,b)
         output = a + b
         output = output.replace('\n', '')
         self.print_log([output])

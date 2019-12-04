@@ -33,7 +33,7 @@ class MyRoomba:
         text = text.ljust(4, ' ')
         self.robot.digit_led_ascii(text)
 
-    def get_sensors(self):
+    def get_roomba_sensors(self):
         sensors = self.robot.get_sensors()
         sensors = sensors._asdict()
         sensors = dict(sensors)
@@ -78,7 +78,7 @@ class MyRoomba:
             return 'motors set'
         # SENSOR DATA
         if command == 'SD':
-            data = self.get_sensors()
+            data = self.get_roomba_sensors()
             data = json.dumps(data)  # reading at the other side: json.loads(a)
             return data
         # SET DISPLAY
