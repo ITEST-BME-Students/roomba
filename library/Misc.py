@@ -1,10 +1,8 @@
-import configparser
 import glob
 import os
 import shutil
-import struct
 import time
-import pickle
+import numpy
 from os import system, name
 
 def clear_console():

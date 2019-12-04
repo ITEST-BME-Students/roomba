@@ -21,9 +21,9 @@ while True:
     print(left, right,binary)
 
     if both > threshold:
-        if left > right: c.set_velocty(0, -rotational_velocity)
-        if left < right: c.set_velocty(0, rotational_velocity)
+        if left > right: c.set_velocity(0, -rotational_velocity)
+        if left < right: c.set_velocity(0, rotational_velocity)
     else:
-        c.set_velocty(linear_velocity, 0)
+        c.set_velocity(linear_velocity, 0)
 
     time.sleep(1)

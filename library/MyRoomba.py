@@ -10,10 +10,11 @@ class MyRoomba:
         self.robot = Create2(port)
         self.robot.start()
         self.robot.safe()
+        self.max_speed = 250
 
     def set_motors(self, left_speed, right_speed):
-        left_speed = Misc.constrain(left_speed, -1, 1) * 500
-        right_speed = Misc.constrain(right_speed, -1, 1) * 500
+        left_speed = Misc.constrain(left_speed, -self.max_speed, self.max_speed)
+        right_speed = Misc.constrain(right_speed, -self.max_speed, self.max_speed)
         left_speed = round(left_speed)
         right_speed = round(right_speed)
         # in mm/s. The order in the api is different

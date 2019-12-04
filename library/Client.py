@@ -185,12 +185,12 @@ class Client:
         bumper_data = get_bumper_data(sensor_data, binary)
         return bumper_data
 
-    def set_velocty(self, linear, angular):
-        # linear: normalized +-1
+    def set_velocity(self, linear, angular):
+        # linear: mm/s
         # angular: degrees/sec
         result = Kinematics.kinematics(linear, angular)
-        left_wheel_speed = result[0] / 500
-        right_wheel_speed = result[1] / 500
+        left_wheel_speed = result[0]
+        right_wheel_speed = result[1]
         self.set_motors(left_wheel_speed, right_wheel_speed)
 
     ##################################

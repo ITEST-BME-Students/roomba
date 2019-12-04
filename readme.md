@@ -33,6 +33,9 @@ import adc_8chan_12bit
 The wiki also lists the `` Pi_hat_adc`` class and its functions, which can be used to read out the ADC.
 
 
+## PYQT 4
+
+conda install pyqt=4
 
 # Roomba
 
