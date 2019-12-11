@@ -1,21 +1,10 @@
-# install pycreate2
-
+## Install pycreate2
 
 ```https://github.com/MomsFriendlyRobotCompany/pycreate2```
 
-# ADC manual
+## ADC shield
 
-## Installation
-
-Step 1: activate i2c on the raspberry pi in the settings.
-
-Step 2: install the python library
-
-The instructions are found on this wiki:
-
-+ http://wiki.seeedstudio.com/8-Channel_12-Bit_ADC_for_Raspberry_Pi-STM32F030/
-
-In brief, run this code on the raspberry:
+First, activate i2c on the raspberry pi in the settings. Next, install the python library. The instructions are found on this [wiki](http://wiki.seeedstudio.com/8-Channel_12-Bit_ADC_for_Raspberry_Pi-STM32F030/). In brief, this code should be run on the Raspberry Pi:
 
 ````
 cd ~
@@ -23,24 +12,24 @@ git clone https://github.com/Seeed-Studio/grove.py
 sudo pip3 install .
 ````
 
-This installs the python code in home directory. Therefore, using the code requires
+This installs the python code in home directory. Therefore, using the code requires the following lines to the Python scripts using it.
 
 ```
 sys.path.insert(0,'/home/pi/grove.py/grove')
 import adc_8chan_12bit
 ```
 
-The wiki also lists the `` Pi_hat_adc`` class and its functions, which can be used to read out the ADC.
+The wiki lists the `` Pi_hat_adc`` class and its functions, which can be used to read out the ADC shield.
 
-## Thermal sensor installation
+## Thermal sensor
+
+Adafruit provides a library for this sensor. It can be installed for Python 3 by running the following code on the Raspberry Pi.
 
 ```sudo pip3 install adafruit-circuitpython-amg88xx```
 
-## RPi.GPIO
+## RPi.GPIO library
 
-installed per default for python 3 on the raspberry
-
-Use the ```pinout``` command rom the command line to get the pinout diagram:
+The ```RPi.GPIO ``` libray is  installed per default for Python 3 on the raspberry. The Raspberry Pi provides a command ```pinout```  to get the pinout diagram:
 
 ```
    3V3  (1) (2)  5V    
