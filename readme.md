@@ -56,10 +56,9 @@ GPIO26 (37) (38) GPIO20
 
 
 
-## PYQT 4
+## PyQt 4
 
-conda install pyqt=4
+The joystick control script requires PyQt 4 on the host computer (not the Raspberry Pi), this can be installed as follows,
 
-# Roomba
+```conda install pyqt=4```
 
-## Reset
