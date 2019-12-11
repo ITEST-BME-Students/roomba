@@ -8,6 +8,7 @@ import json
 from library import Misc
 from library import MyRoomba
 from library import Logger
+from library import Sensors
 
 sys.path.insert(0,'/home/pi/grove.py/grove')
 import adc_8chan_12bit
@@ -37,6 +38,9 @@ class Server:
 
         # connect to adc
         self.adc = adc_8chan_12bit.Pi_hat_adc()
+        # connect to sonar sensor
+        self.sonar = Sensors.SonarSensors()
+        self.thermal = Sensors.ThermalCamera()
 
         # Bind functions
         self.open_connection(12345, self.shutdown)
@@ -45,6 +49,7 @@ class Server:
 
         self.open_connection(10010, bind_function=self.process_roomba_command)
         self.open_connection(10011, bind_function=self.get_adc)
+        self.open_connection(10012, bind_function=self.get_external_sensor)
         self.logger.info('Function binding completed')
 
     ########################################
@@ -71,6 +76,18 @@ class Server:
         #unit = 0.1 percent!!
         result = self.adc.get_all_ratio_0_1_data()
         result = json.dumps(result)
+        return result
+
+    ########################################
+    # Non ADC SENSOR FUNCTIONS
+    ########################################
+    def get_external_sensor(self, args):
+        if not type(args) == list: args = [args]
+        sensor = args[1]
+        if sensor == 'sonar1': data = self.sonar.get_data()
+        if sensor == 'thermal': data = self.thermal.get_data()
+        print(data)
+        result = json.dumps(data)
         return result
     ########################################
     # SERVER COMM FUNCTIONS

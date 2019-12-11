@@ -1,6 +1,5 @@
 import socket
 import paramiko
-import logging
 import threading
 import sys
 import os
@@ -10,6 +9,8 @@ import easygui
 import json
 import natsort
 import numpy
+from matplotlib import pyplot
+
 from library import Logger
 from library import Misc
 from library import Kinematics
@@ -122,13 +123,21 @@ class Client:
     ##################################
     # ADC FUNCTIONS
     ##################################
-
     def get_adc(self):
         reply = self.send_command('get_adc', 10011)
         reply = json.loads(reply)
         converted = []
         for x in reply: converted.append(x*0.1) #to get percentage 0-100. Orginal data is in 0.1%
         return converted
+
+    ##################################
+    # External non ADC sensors
+    ##################################
+    def get_external_sensor(self, sensor):
+        command = Misc.lst2command(['get_sensor', sensor])
+        reply = self.send_command(command, 10012)
+        reply = json.loads(reply)
+        return reply
 
     ##################################
     # BUILD RAW COMMANDS FOR THE ROOMBA
@@ -192,6 +201,14 @@ class Client:
         left_wheel_speed = result[0]
         right_wheel_speed = result[1]
         self.set_motors(left_wheel_speed, right_wheel_speed)
+
+    def get_thermal_image(self, plot=False):
+        data = self.get_external_sensor('thermal')
+        data = numpy.array(data)
+        if plot:
+            pyplot.matshow(data, cmap='hot')
+            pyplot.show()
+        return data
 
     ##################################
     # SERVER CONTROL FUNCTIONS
