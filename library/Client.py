@@ -205,6 +205,8 @@ class Client:
     def get_thermal_image(self, plot=False):
         data = self.get_external_sensor('thermal')
         data = numpy.array(data)
+        data = numpy.transpose(data)
+        data = numpy.fliplr(data)
         if plot:
             pyplot.matshow(data, cmap='hot')
             pyplot.show()

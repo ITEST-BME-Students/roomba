@@ -1,7 +1,13 @@
 from library import Client
+from library import Support
+import time
 
 c = Client.Client(run_locally=False)
 
 
 c.start_remote_server()
-c.get_roomba_sensors()
+
+for x in range(100):
+    a = c.get_thermal_image()
+    b = Support.interpolate_thermal_image(a, True)
+    time.sleep(0.25)

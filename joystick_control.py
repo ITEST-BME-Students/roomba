@@ -91,6 +91,7 @@ class Joystick(QWidget):
         if direction == 'LFT': rot = 20
         if direction == 'RGT': rot = -20
         if direction == 'FWD': lin = 100 *  distance
+        
         if direction == 'BCK': lin = -100 * distance
 
         self.c.set_velocity(lin, rot)
