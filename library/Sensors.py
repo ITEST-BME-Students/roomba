@@ -7,7 +7,9 @@
 import adafruit_amg88xx
 import board
 import busio
+import gpiozero
 
+from library import SensorDefinitions
 
 
 class ThermalCamera:
@@ -22,12 +24,16 @@ class ThermalCamera:
 
 class SonarSensors:
     def __init__(self):
-        pin1 = 0
-        pin2 = 0
+        self.max_distance = 3
+        self.echo_pin1 = SensorDefinitions.echo_pin1
+        self.trigger_pin1 = SensorDefinitions.trigger_pin1
+        self.echo_pin2 = SensorDefinitions.echo_pin2
+        self.trigger_pin2 = SensorDefinitions.trigger_pin2
+        # The distancesensor class has some coode that avoids interference between multiple sensors
+        self.sonar1 = gpiozero.DistanceSensor(echo=self.echo_pin1, trigger=self.trigger_pin1, max_distance=self.max_distance)
+        self.sonar2 = gpiozero.DistanceSensor(echo=self.echo_pin2, trigger=self.trigger_pin2, max_distance=self.max_distance)
 
     def get_data(self):
-        return [0, 0]
-
-
-
-
+        d1 = self.sonar1.distance
+        d2 = self.sonar2.distance
+        return [d1, d2]

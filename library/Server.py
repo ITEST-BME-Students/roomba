@@ -34,13 +34,13 @@ class Server:
         self.print_log('Server working directory: ' + os.getcwd())
 
         # Connect to robot
-        self.roomba = MyRoomba.MyRoomba()
+        #self.roomba = MyRoomba.MyRoomba()
 
         # connect to adc
         self.adc = adc_8chan_12bit.Pi_hat_adc()
         # connect to sonar sensor
         self.sonar = Sensors.SonarSensors()
-        self.thermal = Sensors.ThermalCamera()
+        #self.thermal = Sensors.ThermalCamera()
 
         # Bind functions
         self.open_connection(12345, self.shutdown)
