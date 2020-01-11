@@ -19,6 +19,9 @@ from library.Misc import read_filelist
 def get_bumper_data(sensor_data, binary=False):
     """
     Helper function to extract the bumper data. Should not be called directly.
+
+    For student use: No
+
     :param sensor_data: raw sensor data
     :param binary: boolean
     :return: list of bumpter values
@@ -38,13 +41,13 @@ def get_bumper_data(sensor_data, binary=False):
 class Client:
     """
     This class is used to communicate with the robot.
+
+    For student use: Yes
+
+    :param ip: The IP address of the raspberry pi controlling the roomba robot.
+    :param do_upload: Boolean, indicating whether code should be uploaded to the raspberry pi.
     """
     def __init__(self, ip=False, do_upload=True):
-        """
-
-        :param ip: The IP address of the raspberry pi controlling the roomba robot.
-        :param do_upload: Boolean, indicating whether code should be uploaded to the raspberry pi.
-        """
         self.logger = Logger.Logger('Client')
         self.logging = False
         self.logfile = None
@@ -75,15 +78,11 @@ class Client:
         # Do Upload
         if do_upload: self.upload_files(verbose=True)
 
-    # def stop_logging(self):
-    #     """
-    #     Stops log messages from being written to the console.
-    #     """
-    #     self.file_logger.close()
-
     def print_log(self, text, level='i'):
         """
         Function that handles writing text to the log.
+
+        For student use: No
 
         :param text: Log message as string.
         :param level: The level of importance of the message: (i)nfo, (w), or (c)ricical
@@ -97,6 +96,9 @@ class Client:
     def __del__(self):
         """
         Destructor for the class.
+
+        For student use: No
+
         """
         self.ssh.close()
         self.sftp.close()
@@ -107,6 +109,9 @@ class Client:
     def test_communication(self, message=[]):
         """
         Function to test the communication between the host computer and the raspberry. Sends a test string to the raspberry and prints a returned message.
+
+        For student use: No
+
         :param message: A list of message parts to be sent.
         :return: None, the function prints output to the console.
         """
@@ -118,6 +123,9 @@ class Client:
     def toggle_logging(self, state=True):
         """
         This functions can be used to toggle whether logging messages are generated and written to the console.
+
+        For student use: No
+
         :param state:  Boolean
         :return: None
         """
@@ -133,6 +141,9 @@ class Client:
     def send_raw_command(self, command):
         """
         Sends a raw string to the server. The server will process this string as a command for the robot.
+
+        For student use: No
+
         :param command: A string
         :return: None
         """
@@ -145,6 +156,9 @@ class Client:
     def get_adc(self):
         """
         Get all the analog values from the seeed ADC shield, as percentages in the range 0-100
+
+        For student use: Yes
+
         :return: A list of values.
         """
         reply = self.send_command('get_adc', 10011)
@@ -159,8 +173,11 @@ class Client:
     def get_external_sensor(self, sensor):
         """
         Generic function to get sensor readings from sensors that are not attached to the Seeed shield and are not roomba sensors.
-        :param sensor:
-        :return:
+
+        For student use: No
+
+        :param sensor: A string specifying which sensor to read.
+        :return: Sensor data
         """
         command = Misc.lst2command(['get_sensor', sensor])
         reply = self.send_command(command, 10012)
@@ -173,6 +190,9 @@ class Client:
     def set_motors(self, left, right):
         """
         A low level function to set the speed of the motors of the roomba.
+
+        For student use: Yes
+
         :param left: Left speed as an integer in the range -500,500 mm/s
         :param right: Right speed as an integer in the range -500,500 mm/s
         :return: A return message from the robot.
@@ -185,6 +205,9 @@ class Client:
     def set_display(self, text):
         """
         Sets the display screen of the root to a specified text value.
+
+        For student use: Yes
+
         :param text: The message to be shown. Only the first 4 characters can be displayed.
         :return: A return message from the robot.
         """
@@ -195,7 +218,10 @@ class Client:
 
     def get_roomba_sensors(self):
         """
-        Gets the values of all roomba sensors
+        Gets the values of all roomba sensors.
+
+        For student use: Yes
+
         :return: A dictionary of sensors values
         """
         result = self.send_raw_command('SD')
@@ -204,7 +230,10 @@ class Client:
 
     def move(self, distance):
         """
-        Moves the robot foward by a given distance
+        Moves the robot foward by a given distance.
+
+        For student use: Yes
+
         :param distance: distance in mm
         :return: A return message from the robot.
         """
@@ -216,7 +245,10 @@ class Client:
 
     def turn(self, degrees):
         """
-        Turns the robot a number of degrees
+        Turns the robot a number of degrees.
+
+        For student use: Yes
+
         :param degrees: turn angle in degrees.
         :return: A return message from the robot.
         """
@@ -232,6 +264,9 @@ class Client:
     def formatted_sensor_data(self):
         """
         Reads out all roomba sensors and formats the results into a text that can be printed to the console.
+
+        For student use: Yes
+
         :return: Formatted text containing all sensor values.
         """
         text = ''
@@ -248,7 +283,10 @@ class Client:
 
     def get_bumper_data(self, binary=False):
         """
-        Gets the roomba bumper data
+        Gets the roomba bumper data.
+
+        For student use: Yes
+
         :param binary: Boolean, specifies whether the raw or the binary values should be returned.
         :return: A list of values.
         """
@@ -259,9 +297,12 @@ class Client:
     def set_velocity(self, linear, angular):
         """
         Sets the linear and angular velocity of the roomba.
+
+        For student use: Yes
+
         :param linear: Linear speed in mm/s
         :param angular: Angular speed in degrees/s
-        :return:
+        :return: None
         """
         # linear: mm/s, angular: degrees/sec
         result = Kinematics.kinematics(linear, angular)
@@ -272,6 +313,9 @@ class Client:
     def get_thermal_image(self, plot=False):
         """
         Gets the image from the thermal camera.
+
+        For student use: Yes
+
         :param plot: boolean, should be the image be plotted?
         :return: A numpy array of temperature values (pixels).
         """
@@ -291,6 +335,9 @@ class Client:
     def send_command(self, command, port, answer=True):
         """
         Low level function sending a string command to the remote server.
+
+        For student use: No
+
         :param command: Command as a string.
         :param port: Port to use
         :param answer: Boolean specifying whether an answer should be read out.
@@ -314,6 +361,9 @@ class Client:
     def stop_remote_server(self):
         """
         Sends a command stopping the remote server on port 12345
+
+        For student use: No
+
         :return: None
         """
         a = self.send_command('close', 12345, answer=True)
@@ -323,6 +373,9 @@ class Client:
     def start_remote_server(self):
         """
         Starts the remote server as a Python thread.
+
+        For student use: No
+
         :return: None
         """
         self.stop_remote_python()
@@ -332,7 +385,10 @@ class Client:
 
     def stop_remote_python(self):
         """
-        Stops all Python processes on the remote raspberry pi
+        Stops all Python processes on the remote raspberry pi.
+
+        For student use: No
+
         :return: The return value as generated by the raspberry pi.
         """
         stdin, stdout, stderr = self.ssh.exec_command('killall python')
@@ -349,6 +405,9 @@ class Client:
     def remote_server_process(self):
         """
         A function implementing the process of reading the output generated by the server and printing it to the local console.
+
+        For student use: No
+
         :return: None.
         """
         command = self.remote_python + ' ' + self.remote_dir + self.remote_script
@@ -375,6 +434,9 @@ class Client:
     def remote_folder_exists(self, folder):
         """
         Function testing whether a folder exists on the raspberry.
+
+        For student use: No
+
         :param folder: The folder to be tested.
         :return: Boolean
         """
@@ -389,6 +451,9 @@ class Client:
     def delete_remote_folder(self, folder):
         """
         Function to delete a remote folder.
+
+        For student use: No
+
         :param folder: Folder to be deleted.
         :return: None
         """
@@ -404,6 +469,9 @@ class Client:
     def upload_files(self, verbose=False):
         """
         This function uploads all the files specified in filelist.txt to the raspberry pi.
+
+        For student use: No
+
         :param verbose: Boolean
         :return: None
         """
