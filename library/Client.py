@@ -10,21 +10,11 @@ import json
 import natsort
 import numpy
 from matplotlib import pyplot
-
 from library import Logger
 from library import Misc
 from library import Kinematics
+from library.Misc import read_filelist
 
-def read_filelist():
-    current_dir = os.path.dirname(__file__)
-    list_file = os.path.join(current_dir, 'filelist.txt')
-    f = open(list_file, 'r')
-    files = f.readlines()
-    f.close()
-    while '\n' in files: files.remove('\n')
-    new = []
-    for x in files: new.append(x.rstrip('\n'))
-    return new
 
 def get_bumper_data(sensor_data, binary=False):
     a = sensor_data['light_bumper_left']
@@ -39,32 +29,25 @@ def get_bumper_data(sensor_data, binary=False):
     if not binary: return analog_data
 
 
-
 class Client:
-    def __init__(self, do_upload=True, run_locally=False):
+    def __init__(self, ip=False, do_upload=True):
+        """
+
+        :param ip: The IP address of the raspberry pi controlling the roomba robot.
+        :param do_upload:
+        """
         self.logger = Logger.Logger('Client')
-        self.run_locally = run_locally
         self.logging = False
         self.logfile = None
         self.__stop_loop = False
 
-        if not self.run_locally:
-            self.remote = '192.168.0.249'
-            self.remote_python = 'python3'
-            self.remote_dir = '/home/pi/Desktop/server/'
-            self.remote_script = 'start_server.py'
-            self.local_dir = os.getcwd()
-            self.user = 'pi'
-            self.password = 'raspberry'
-
-        if self.run_locally:
-            self.remote = 'localhost'
-            self.remote_python = '/home/dieter/anaconda3/envs/roomba/bin/python'
-            self.remote_dir = '/home/dieter/Desktop/server/'
-            self.remote_script = 'start_server.py'
-            self.local_dir = os.getcwd()
-            self.user = 'dieter'
-            self.password = None
+        self.remote = ip
+        self.remote_python = 'python3'
+        self.remote_dir = '/home/pi/Desktop/server/'
+        self.remote_script = 'start_server.py'
+        self.local_dir = os.getcwd()
+        self.user = 'pi'
+        self.password = 'raspberry'
 
         if self.password is None: self.password = easygui.passwordbox('password for the remote computer')
 
@@ -107,7 +90,7 @@ class Client:
         self.print_log([reply])
 
     def toggle_logging(self, state=True):
-        #This disables/enables the logging for both the server and the client
+        # This disables/enables the logging for both the server and the client
         self.logger.logger.disabled = not state
         reply = self.send_command(str(state), 10001)
         self.print_log([reply])
@@ -127,7 +110,7 @@ class Client:
         reply = self.send_command('get_adc', 10011)
         reply = json.loads(reply)
         converted = []
-        for x in reply: converted.append(x*0.1) #to get percentage 0-100. Orginal data is in 0.1%
+        for x in reply: converted.append(x * 0.1)  # to get percentage 0-100. Orginal data is in 0.1%
         return converted
 
     ##################################
@@ -177,7 +160,7 @@ class Client:
     # SUPPORT/SECONDARRY FUNCTIONS
     ##################################
     def formatted_sensor_data(self):
-        text=''
+        text = ''
         self.logger.logger.disabled = True
         data = self.get_roomba_sensors()
         self.logger.logger.disabled = False
@@ -186,7 +169,7 @@ class Client:
         for x in keys:
             item = x.ljust(30, '.')
             value = str(data[x])
-            text+=item+value+'\n'
+            text += item + value + '\n'
         return text
 
     def get_bumper_data(self, binary=False):
@@ -205,10 +188,11 @@ class Client:
     def get_thermal_image(self, plot=False):
         data = self.get_external_sensor('thermal')
         data = numpy.array(data)
+        data = data.reshape(24, 32)
         data = numpy.transpose(data)
-        data = numpy.fliplr(data)
         if plot:
             pyplot.matshow(data, cmap='hot')
+            pyplot.colorbar()
             pyplot.show()
         return data
 
@@ -238,7 +222,7 @@ class Client:
         self.__stop_loop = True
 
     def start_remote_server(self):
-        if not self.run_locally: self.stop_remote_python()
+        self.stop_remote_python()
         t = threading.Thread(target=self.remote_server_process)
         t.start()
         time.sleep(5)
@@ -270,7 +254,7 @@ class Client:
                 # only break if there is no more data to be read from the remote session
                 if self.__stop_loop: break
         self.__stop_loop = False
-        if not self.run_locally: self.stop_remote_python()
+        self.stop_remote_python()
         self.ssh.close()
 
     ##################################

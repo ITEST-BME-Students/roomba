@@ -20,7 +20,7 @@ class Joystick(QWidget):
         self.grabCenter = False
         self.__maxDistance = 50
         # connect to robot
-        self.c = Client.Client(run_locally=False)
+        self.c = Client.Client(False)
         self.c.start_remote_server()
 
     def paintEvent(self, event):

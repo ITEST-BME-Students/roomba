@@ -2,7 +2,7 @@ from library import Client
 from library import Misc
 import time
 
-c = Client.Client(run_locally=True)
+c = Client.Client(False)
 c.start_remote_server()
 c.toggle_logging(False)
 

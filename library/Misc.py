@@ -232,3 +232,14 @@ def contains(text, lst):
         if x in text: return True
     return False
 
+
+def read_filelist():
+    current_dir = os.path.dirname(__file__)
+    list_file = os.path.join(current_dir, 'filelist.txt')
+    f = open(list_file, 'r')
+    files = f.readlines()
+    f.close()
+    while '\n' in files: files.remove('\n')
+    new = []
+    for x in files: new.append(x.rstrip('\n'))
+    return new

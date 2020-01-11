@@ -2,7 +2,7 @@ from library import Client
 from library import Support
 import time
 
-c = Client.Client(run_locally=False)
+c = Client.Client(False)
 
 
 c.start_remote_server()

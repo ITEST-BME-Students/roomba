@@ -1,10 +1,10 @@
 library/__init__.py
+library/Settings.py
 library/Server.py
 library/Misc.py
 library/MyRoomba.py
 library/Ports.py
 library/Logger.py
-library/SensorDefinitions.py
 library/Sensors.py
 start_server.py
 

@@ -1,19 +1,19 @@
-import logging
-import os
 import socket
 import sys
 import threading
 import time
 import json
 from library import Misc
-from library import MyRoomba
 from library import Logger
 from library import Sensors
+from library import Settings
+from library import MyRoomba
 
-sys.path.insert(0,'/home/pi/grove.py/grove')
+sys.path.insert(0, '/home/pi/grove.py/grove')
 import adc_8chan_12bit
 
 import os
+
 
 def default_function(*args):
     return args
@@ -34,13 +34,13 @@ class Server:
         self.print_log('Server working directory: ' + os.getcwd())
 
         # Connect to robot
-        #self.roomba = MyRoomba.MyRoomba()
+        if Settings.connect_to_robot: self.roomba = MyRoomba.MyRoomba()
 
         # connect to adc
         self.adc = adc_8chan_12bit.Pi_hat_adc()
-        # connect to sonar sensor
-        self.sonar = Sensors.SonarSensors()
-        #self.thermal = Sensors.ThermalCamera()
+        # connect sensors
+        if Settings.connect_to_sonar: self.sonar = Sensors.SonarSensors()
+        if Settings.connect_to_thermal: self.thermal = Sensors.ThermalCamera()
 
         # Bind functions
         self.open_connection(12345, self.shutdown)
@@ -73,7 +73,7 @@ class Server:
     ########################################
     def get_adc(self, args):
         if not type(args) == list: args = [args]
-        #unit = 0.1 percent!!
+        # unit = 0.1 percent!!
         result = self.adc.get_all_ratio_0_1_data()
         result = json.dumps(result)
         return result
@@ -84,11 +84,11 @@ class Server:
     def get_external_sensor(self, args):
         if not type(args) == list: args = [args]
         sensor = args[1]
-        if sensor == 'sonar1': data = self.sonar.get_data()
+        if sensor == 'sonar': data = self.sonar.get_data()
         if sensor == 'thermal': data = self.thermal.get_data()
-        print(data)
         result = json.dumps(data)
         return result
+
     ########################################
     # SERVER COMM FUNCTIONS
     ########################################
