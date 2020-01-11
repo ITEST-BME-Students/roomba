@@ -1,3 +1,11 @@
+# Documentation for users and students
+
+The documentation for users and students can be found in the ```documentation``` folder. The functions provided by the class ```client``` are documented in ```documentation\markdown```. The documentation below specifies how the software can be installed on the raspberry pi and the host computer. **it is not intended to be used by students**.
+
+[Direct link to the student documentation](https://github.com/BME-ITEST-Students/roomba/blob/master/documentation/markdown/index.md) 
+
+**Downloading the code** The latest version of the code can be downloaded as a zip file by clicking the green download button, alternatively you can navigate to the releases and download a specific version.
+
 # Software installation
 
 ## Install pycreate2
