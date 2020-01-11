@@ -17,6 +17,12 @@ from library.Misc import read_filelist
 
 
 def get_bumper_data(sensor_data, binary=False):
+    """
+    Helper function to extract the bumper data. Should not be called directly.
+    :param sensor_data: raw sensor data
+    :param binary: boolean
+    :return: list of bumpter values
+    """
     a = sensor_data['light_bumper_left']
     b = sensor_data['light_bumper_front_left']
     c = sensor_data['light_bumper_center_left']
@@ -30,6 +36,9 @@ def get_bumper_data(sensor_data, binary=False):
 
 
 class Client:
+    """
+    This class is used to communicate with the robot.
+    """
     def __init__(self, ip=False, do_upload=True):
         """
 
