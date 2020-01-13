@@ -56,7 +56,7 @@ class Client:
 
         self.remote = ip
         self.remote_python = 'python3'
-        self.remote_dir = '/home/pi/Desktop/server/'
+        self.remote_dir = Misc.convert_path('/home/pi/Desktop/server/')
         self.remote_script = 'start_server.py'
         self.local_dir = os.getcwd()
         self.user = 'pi'
@@ -411,7 +411,10 @@ class Client:
 
         :return: None.
         """
-        command = self.remote_python + ' ' + self.remote_dir + self.remote_script
+        path = os.path.join(self.remote_dir, self.remote_script)
+        path = Misc.linux_path(path)
+        command = self.remote_python + ' ' + path
+
         channel = self.ssh.get_transport()
         channel = channel.open_session()
         channel.get_pty()
@@ -441,6 +444,7 @@ class Client:
         :param folder: The folder to be tested.
         :return: Boolean
         """
+        folder = Misc.convert_path(folder)
         try:
             self.sftp.stat(folder)
         except IOError as e:
@@ -461,6 +465,8 @@ class Client:
         files = self.sftp.listdir(folder)
         for file_name in files:
             file_path = os.path.join(folder, file_name)
+            file_path = Misc.convert_path(file_path)
+            print(file_path, file_path)
             try:
                 self.sftp.remove(file_path)
             except IOError:
@@ -477,6 +483,8 @@ class Client:
         :return: None
         """
         if verbose: print('Uploading files')
+        self.remote_folder_exists(self.remote_dir)
+     
         if self.remote_folder_exists(self.remote_dir): self.delete_remote_folder(self.remote_dir)
         if not self.remote_folder_exists(self.remote_dir): self.sftp.mkdir(self.remote_dir)
         files = read_filelist()

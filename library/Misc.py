@@ -241,6 +241,12 @@ def convert_path(path):
     p = str(p)
     return p
 
+def linux_path(path):
+    p = pathlib.Path(path)
+    p = pathlib.PurePosixPath(p)
+    p = str(p)
+    return p
+
 
 def read_filelist():
     current_dir = os.path.dirname(__file__)
