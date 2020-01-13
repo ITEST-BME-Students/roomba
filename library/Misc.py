@@ -3,7 +3,9 @@ import os
 import shutil
 import time
 import numpy
+import pathlib
 from os import system, name
+
 
 def clear_console():
     # for windows
@@ -19,6 +21,7 @@ def constrain(value, min_value, max_value):
     if value < min_value: return min_value
     if value > max_value: return max_value
     return value
+
 
 def timed_folder_name():
     name = time.asctime()
@@ -233,21 +236,20 @@ def contains(text, lst):
     return False
 
 
-def convert2windows_path(lst):
-    new = []
-    for x in lst:
-        x = x.rstrip('\n')
-        parts = x.split('/')
-        y = os.path.join(*parts)
-        new.append(y)
-    return new
+def convert_path(path):
+    p = pathlib.Path(path)
+    p = str(p)
+    return p
+
 
 def read_filelist():
     current_dir = os.path.dirname(__file__)
     list_file = os.path.join(current_dir, 'filelist.txt')
+    list_file = convert_path(list_file)
     f = open(list_file, 'r')
     files = f.readlines()
     f.close()
     while '\n' in files: files.remove('\n')
-    new = convert2windows_path(files)
+    new = []
+    for x in files: new.append(x.rstrip('\n'))
     return new

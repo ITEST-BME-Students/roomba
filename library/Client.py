@@ -9,6 +9,7 @@ import easygui
 import json
 import natsort
 import numpy
+import pathlib
 from matplotlib import pyplot
 from library import Logger
 from library import Misc
@@ -483,6 +484,9 @@ class Client:
             parts = os.path.split(local_file)
             remote_file = os.path.join(self.remote_dir, parts[0], parts[1])
             remote_dir = os.path.join(self.remote_dir, parts[0])
+            local_file = Misc.convert_path(local_file)
+            remote_file = Misc.convert_path(remote_file)
+            remote_dir = Misc.convert_path(remote_dir)
             if not self.remote_folder_exists(remote_dir): self.sftp.mkdir(remote_dir)
             self.sftp.put(local_file, remote_file)
             if verbose: print(local_file, '---->', remote_file)

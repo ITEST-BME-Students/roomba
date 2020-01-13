@@ -1,4 +1,4 @@
-![qr code for this page url](/home/dieter/Downloads/qr-code.png =250x250) 
+![qr code for this page url](/home/dieter/Downloads/qr-code.png) 
 
 #https://tinyurl.com/szq4f5e#
 
@@ -16,10 +16,12 @@ The documentation for users and students can be found in the ```documentation```
 ## Host computer
 
 + Install Anaconda Python 3.7: https://www.anaconda.com/distribution/
-+ Additional Python packages:
-	+ ffddfff
++ Additional Python packages (using Anaconda prompt):
+	+ paramiko: ```conda install paramiko```
+	+ easygui: ```pip install easygui```
+	+natsort: ```conda install natsort```
 
-
+Run the ```minimal_example.py``` to test the robot.
 
 
 # Software installation

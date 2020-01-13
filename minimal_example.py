@@ -1,7 +1,7 @@
 from library import Client
 import time
 #ip = '192.168.0.249'
-ip = '192.168.200.28'
+ip = '192.168.0.169'
 c = Client.Client(ip=ip, do_upload=True)
 
 
