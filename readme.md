@@ -1,3 +1,8 @@
+![qr code for this page url](/home/dieter/Downloads/qr-code.png =250x250) 
+
+#https://tinyurl.com/szq4f5e#
+
+
 # Documentation for users and students
 
 The documentation for users and students can be found in the ```documentation``` folder. The functions provided by the class ```client``` are documented in ```documentation\markdown```. The documentation below specifies how the software can be installed on the raspberry pi and the host computer. **The documentation is not intended to be used by students**.
@@ -5,6 +10,17 @@ The documentation for users and students can be found in the ```documentation```
 [Direct link to the student documentation](https://github.com/BME-ITEST-Students/roomba/blob/master/documentation/markdown/index.md) 
 
 **Downloading the code** The latest version of the code can be downloaded as a zip file by clicking the green download button, alternatively you can navigate to the releases and download a specific version.
+
+# Prepare a working system
+
+## Host computer
+
++ Install Anaconda Python 3.7: https://www.anaconda.com/distribution/
++ Additional Python packages:
+	+ ffddfff
+
+
+
 
 # Software installation
 
