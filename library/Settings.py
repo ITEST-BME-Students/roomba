@@ -1,4 +1,4 @@
-connect_to_robot=False
+connect_to_robot=True
 connect_to_sonar=False
 connect_to_thermal=True
 

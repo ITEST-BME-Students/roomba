@@ -233,6 +233,15 @@ def contains(text, lst):
     return False
 
 
+def convert2windows_path(lst):
+    new = []
+    for x in lst:
+        x = x.rstrip('\n')
+        parts = x.split('/')
+        y = os.path.join(*parts)
+        new.append(y)
+    return new
+
 def read_filelist():
     current_dir = os.path.dirname(__file__)
     list_file = os.path.join(current_dir, 'filelist.txt')
@@ -240,6 +249,5 @@ def read_filelist():
     files = f.readlines()
     f.close()
     while '\n' in files: files.remove('\n')
-    new = []
-    for x in files: new.append(x.rstrip('\n'))
+    new = convert2windows_path(files)
     return new
