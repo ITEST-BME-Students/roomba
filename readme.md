@@ -1,9 +1,8 @@
-![qr code for this page url](/home/dieter/Downloads/qr-code.png) 
+# Tiny URL for this page
 
-#https://tinyurl.com/szq4f5e#
+https://tinyurl.com/szq4f5e#
 
-
-# Documentation for users and students
+# Where is theocumentation for users and students?
 
 The documentation for users and students can be found in the ```documentation``` folder. The functions provided by the class ```client``` are documented in ```documentation\markdown```. The documentation below specifies how the software can be installed on the raspberry pi and the host computer. **The documentation is not intended to be used by students**.
 
@@ -19,10 +18,16 @@ The documentation for users and students can be found in the ```documentation```
 + Additional Python packages (using Anaconda prompt):
 	+ paramiko: ```conda install paramiko```
 	+ easygui: ```pip install easygui```
-	+natsort: ```conda install natsort```
+	+ natsort: ```conda install natsort```
 
 Run the ```minimal_example.py``` to test the robot.
 
+## Raspberry Pi
+
++ Copy disk image
++ Log in Raspberry Pi to give it a unique name
++ Attach Seeed Analog shield
++ Add GPIO marker shield
 
 # Software installation
 
@@ -53,7 +58,7 @@ import adc_8chan_12bit
 
 The wiki lists the `` Pi_hat_adc`` class and its functions, which can be used to read out the ADC shield.
 
-## Thermal sensor
+## Thermal sensor [deprecated]
 
 Adafruit provides a library for this sensor. It can be installed for Python 3 by running the following code on the Raspberry Pi.
 

@@ -1,5 +1,6 @@
 import serial.tools.list_ports
 
+
 class Ports:
     def __init__(self):
         self.dict = {}
@@ -13,7 +14,6 @@ class Ports:
         keys = self.dict.keys()
         for k in keys:
             print(k, self.dict[k])
-
 
     def get_port(self, device):
         self.update()
