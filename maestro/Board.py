@@ -1,11 +1,11 @@
-from maestro.Device import BoardDevice
-from maestro import Util
+from .Device import BoardDevice
+from . import Util
 import time
 import numpy
 
 
 class Board(BoardDevice):
-    def __init__(self, ser_port=False, verbose=False):
+    def __init__(self, ser_port=None, verbose=True):
         self.servo1 = 0
         self.servo2 = 1
         self.led1 = 2
@@ -24,11 +24,12 @@ class Board(BoardDevice):
         self.max_servo = 2400
         self.offset_servo = -150
         BoardDevice.__init__(self, ser_port, verbose)
+        self.set_speeds([0, 0]) #0 is max speed
 
     def test_connection(self):
         try:
             self.get_photo()
-            self.get_pot()
+            self.get_dial()
             self.set_led1(True)
             self.set_led2(True)
             time.sleep(0.25)
@@ -48,7 +49,12 @@ class Board(BoardDevice):
         photo = Util.normalize(photo, self.photo_min, self.photo_max)
         return photo
 
-    def get_pot(self):
+    def set_speeds(self, speeds):
+        channels = [0, 1, 2, 3, 4, 5]
+        speeds = [speeds[0], speeds[1], 0, 0, 0, 0]
+        self.device.set_speeds(channels, speeds)
+
+    def get_dial(self):
         """Get the normalized level of the potentiometer.
 
         :return: float

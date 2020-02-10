@@ -2,7 +2,7 @@
 
 https://tinyurl.com/szq4f5e#
 
-# Where is theocumentation for users and students?
+# Where is the documentation for users and students?
 
 The documentation for users and students can be found in the ```documentation``` folder. The functions provided by the class ```client``` are documented in ```documentation\markdown```. The documentation below specifies how the software can be installed on the raspberry pi and the host computer. **The documentation is not intended to be used by students**.
 
@@ -10,7 +10,7 @@ The documentation for users and students can be found in the ```documentation```
 
 **Downloading the code** The latest version of the code can be downloaded as a zip file by clicking the green download button, alternatively you can navigate to the releases and download a specific version.
 
-# Prepare a working system
+# Prepare a working computer-robot system
 
 ## Host computer
 
@@ -58,30 +58,7 @@ import adc_8chan_12bit
 
 The wiki lists the `` Pi_hat_adc`` class and its functions, which can be used to read out the ADC shield.
 
-## Thermal sensor [deprecated]
 
-Adafruit provides a library for this sensor. It can be installed for Python 3 by running the following code on the Raspberry Pi.
-
-```sudo pip3 install adafruit-circuitpython-amg88xx```
-
-The orientation of the data is as follows: with the sensor oriented with the wires at the bottom, the image behaves like a camera image: 
-
-+ Pixels at the left of the image come from the left of the field of view.
-+ Pixels at the top come from the top of the field of view.
-
-```
-
-######
-##++##
-##++##
-######
-#WIRES#
- | | | |
-
-
------>
-
-```
 
 ## RPi.GPIO library
 
@@ -110,7 +87,15 @@ GPIO26 (37) (38) GPIO20
    GND (39) (40) GPIO21
 ```
 
+## Thermal camera Adafruit mlx90640
 
+Adafruit provides a Python library for this sensor.
+
+```https://pypi.org/project/adafruit-circuitpython-mlx90640/```
+
+installation:
+
+```pip install adafruit-circuitpython-mlx90640```
 
 ## PyQt 4
 
@@ -118,3 +103,30 @@ The joystick control script requires PyQt 4 on the host computer (not the Raspbe
 
 ```conda install pyqt=4```
 
+
+# Deprecated
+
+## Thermal sensor: adafruit amg88xx
+
+Adafruit provides a library for this sensor. It can be installed for Python 3 by running the following code on the Raspberry Pi.
+
+```sudo pip3 install adafruit-circuitpython-amg88xx```
+
+The orientation of the data is as follows: with the sensor oriented with the wires at the bottom, the image behaves like a camera image: 
+
++ Pixels at the left of the image come from the left of the field of view.
++ Pixels at the top come from the top of the field of view.
+
+```
+
+######
+##++##
+##++##
+######
+#WIRES#
+ | | | |
+
+
+----->
+
+```

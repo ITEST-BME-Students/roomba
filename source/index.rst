@@ -8,3 +8,6 @@ Client documentation
 
 .. automodule:: library.Client
    :members:
+
+.. automodule:: maestro.Board
+   :members:

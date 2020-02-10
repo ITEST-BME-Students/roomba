@@ -5,9 +5,11 @@ Created on Sat Jun 24 09:42:38 2017
 
 @author: dieter
 """
-from maestro import Util
-import maestro.Maestro as Maestro
+from . import Util
+from . import Maestro
 import gc
+
+from ..library import Ports
 
 
 class BoardDevice:
@@ -41,19 +43,22 @@ class BoardDevice:
         self.device = Maestro.Device(con_port=False, ser_port=ser_port)
 
     def auto_connect(self):
-        ports = Util.serial_ports()
-        for port in ports:
-            if self.verbose: print('+ Trying port', port, end='')
-            self.device = Maestro.Device(con_port=False, ser_port=port)
-            success = self.test_connection()
-            if success: break
-            if self.verbose: print('\t--> Rejected')
-        if success and self.verbose: print('\t--> OK')
+        p = Ports.Ports()
+        ser_port = p.get_port('Maestro')
+        if ser_port is not None:
+            print('+ Port found:', ser_port)
+            self.device = Maestro.Device(con_port=False, ser_port=ser_port)
+            self.test_connection()
+            return
+        if ser_port is None:
+            print('+ No port found -- is the device connected?')
+            return
 
     def disconnect_others(self):
         signature = str(type(self))
         for other in gc.get_objects():
-            if signature in str(type(other)):
+            signature_other = str(type(other))
+            if signature in signature_other:
                 if other.id != self.id: other.disconnect()
 
     def disconnect(self):
@@ -61,4 +66,4 @@ class BoardDevice:
         try:
             self.device.__del__()
         except Exception as error:
-            print(error)
+            if self.verbose: print('+ ERROR:', error)
