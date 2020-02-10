@@ -54,7 +54,7 @@ def copy_folder(src, target):
         print(('Directory not copied. Error: %s' % e))
 
 
-def copy_library(target, src='library'):
+def copy_library(target, src='roomba'):
     try:
         shutil.copytree(src, target)
     # Directories are the same

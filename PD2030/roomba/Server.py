@@ -3,11 +3,11 @@ import sys
 import threading
 import time
 import json
-from library import Misc
-from library import Logger
-from library import Sensors
-from library import Settings
-from library import MyRoomba
+from . import Misc
+from . import Logger
+from . import Sensors
+from . import Settings
+from . import MyRoomba
 
 sys.path.insert(0, '/home/pi/grove.py/grove')
 import adc_8chan_12bit

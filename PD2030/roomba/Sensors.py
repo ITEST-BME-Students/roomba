@@ -4,7 +4,7 @@
 # @Last Modified by:   liu2z2
 # @Last Modified time: 2019-12-04 14:25:16
 
-from library import Settings
+from . import Settings
 import adafruit_mlx90640
 #import adafruit_amg88xx
 import board

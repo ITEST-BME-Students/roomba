@@ -9,13 +9,11 @@ import easygui
 import json
 import natsort
 import numpy
-import pathlib
 from matplotlib import pyplot
-from library import Logger
-from library import Misc
-from library import Kinematics
-from library.Misc import read_filelist
-
+from . import Logger
+from . import Misc
+from . import Kinematics
+from .Misc import read_filelist
 
 def get_bumper_data(sensor_data, binary=False):
     """

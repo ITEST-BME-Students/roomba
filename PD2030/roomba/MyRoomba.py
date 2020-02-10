@@ -1,8 +1,8 @@
 from pycreate2 import Create2
-from library import Ports
-from library import Misc
+from . import Ports
+from . import Misc
 import json
-import time
+
 
 class MyRoomba:
     def __init__(self, port=None):

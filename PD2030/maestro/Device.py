@@ -9,7 +9,7 @@ from . import Util
 from . import Maestro
 import gc
 
-from ..library import Ports
+from ..roomba import Ports
 
 
 class BoardDevice:

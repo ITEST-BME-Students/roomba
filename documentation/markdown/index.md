@@ -1,11 +1,11 @@
-<!-- BMEroomba documentation master file, created by
+<!-- PD2030 documentation master file, created by
 sphinx-quickstart on Sat Jan 11 15:45:57 2020.
 You can adapt this file completely to your liking, but it should at least
 contain the root `toctree` directive. -->
-# Client documentation
+# Roomba client documentation
 
 
-### class library.Client.Client(ip=False, do_upload=True)
+### class PD2030.roomba.Client.Client(ip=False, do_upload=True)
 This class is used to communicate with the robot.
 
 For student use: Yes
@@ -406,7 +406,7 @@ For student use: No
 
 
 
-### library.Client.get_bumper_data(sensor_data, binary=False)
+### PD2030.roomba.Client.get_bumper_data(sensor_data, binary=False)
 Helper function to extract the bumper data. Should not be called directly.
 
 For student use: No
@@ -425,3 +425,139 @@ For student use: No
 * **Returns**
 
     list of bumpter values
+
+
+# Maestro board documentation
+
+
+### class PD2030.maestro.Board.Board(ser_port=None, verbose=True)
+This class is used to communicate with the maestro-based board
+
+For student use: Yes
+
+
+* **Parameters**
+
+    
+    * **ser_port** – The port used for serial communication. If omitted, the code will try to find the port.
+
+
+    * **verbose** – Boolean.
+
+
+
+#### calibrate_photo()
+Function to calibrate the photocell. A number of measurements will be taken. The recorded minimum and 
+maximum values are used to normalize subsequent measurements.
+
+
+* **Returns**
+
+    Minimum and maximum value.
+
+
+
+#### calibrate_pot()
+Function to calibrate the potentiometer. A number of measurements will be taken. The recorded minimum and 
+maximum values are used to normalize subsequent measurements.
+
+
+* **Returns**
+
+    Minimum and maximum value.
+
+
+
+#### get_dial()
+Get the normalized level of the potentiometer.
+
+
+* **Returns**
+
+    float
+    Level of the potentiometer in the range [0, 1].
+
+
+
+#### get_photo()
+Gets the normalized level of the photocell.
+
+
+* **Returns**
+
+    float
+    Level of the photocell in the range [0, 1].
+
+
+
+#### set_led1(value)
+Set state of LED 1.
+
+
+* **Parameters**
+
+    **value** (*Bool*) – State of LED 1.
+
+
+
+* **Returns**
+
+    None
+
+
+
+#### set_led2(value)
+Set state of LED 2.
+
+
+#### set_leds(l1, l2)
+Shortcut to set both LEDs at the same time.
+
+
+* **Parameters**
+
+    
+    * **l1** (*Bool*) – State of LED 1
+
+
+    * **l2** (*Bool*) – State of LED 2
+
+
+
+* **Returns**
+
+    None
+
+
+
+#### set_servo1(position, raw=False)
+Set the position of servo 1.
+
+
+* **Parameters**
+
+    
+    * **position** (*Float*) – Normalized target position [0, 1] for the servo.
+
+
+    * **raw** (*Bool*) – If true, position is given in steps.
+
+
+
+* **Returns**
+
+    None
+
+
+
+#### set_servo2(target, raw=False)
+Set the position of servo 2.
+
+
+#### stop_all()
+Set all motors to a neutral position and switch of both LEDs.
+
+
+* **Returns**
+
+    None

@@ -13,11 +13,10 @@
 import os
 import sys
 sys.path.insert(0, os.path.abspath('/home/dieter/Dropbox/PythonRepos/roomba'))
-sys.path.append("..")
 
 # -- Project information -----------------------------------------------------
 
-project = 'BMEroomba'
+project = 'PD2030'
 copyright = '2020, Dieter'
 author = 'Dieter'
 

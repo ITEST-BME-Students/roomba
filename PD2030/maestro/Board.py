@@ -5,6 +5,14 @@ import numpy
 
 
 class Board(BoardDevice):
+    """
+    This class is used to communicate with the maestro-based board
+
+    For student use: Yes
+
+    :param ser_port: The port used for serial communication. If omitted, the code will try to find the port.
+    :param verbose: Boolean.
+    """
     def __init__(self, ser_port=None, verbose=True):
         self.servo1 = 0
         self.servo2 = 1

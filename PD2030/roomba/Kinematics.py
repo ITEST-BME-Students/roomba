@@ -1,4 +1,4 @@
-from library import Misc
+from . import Misc
 
 
 def kinematics(lin_speed, rot_speed):  # in mm/s and deg/sec

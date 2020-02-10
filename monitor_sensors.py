@@ -1,5 +1,5 @@
-from library import Client
-from library import Misc
+from PD2030.roomba import Client
+from PD2030.roomba import Misc
 import time
 
 c = Client.Client(False)

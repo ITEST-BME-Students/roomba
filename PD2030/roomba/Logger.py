@@ -2,7 +2,7 @@ import logging
 import os
 import os.path
 import sys
-from library import Misc
+from . import Misc
 
 
 class Logger:
