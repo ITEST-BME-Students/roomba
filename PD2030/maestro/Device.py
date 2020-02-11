@@ -31,12 +31,13 @@ class BoardDevice:
         if self.verbose: print('\n+ Start Connecting instance', self.id)
         if disconnect_all: self.disconnect_others()
         if not ser_port:
-            self.auto_connect()
+            success = self.auto_connect()
+
         else:
             self.manual_connect(ser_port=ser_port)
-        success = self.test_connection()
-        if success and self.verbose: print('+ Connecting succeeded')
-        if not success and self.verbose: print('+ Connecting failed')
+            success = self.test_connection()
+        if success and self.verbose: print('+ Connection succeeded')
+        if not success and self.verbose: print('+ Connection failed. Perhaps try specifying the port manually.')
         return success
 
     def manual_connect(self, ser_port):
@@ -44,15 +45,15 @@ class BoardDevice:
 
     def auto_connect(self):
         p = Ports.Ports()
-        ser_port = p.get_port('Maestro')
-        if ser_port is not None:
-            print('+ Port found:', ser_port)
-            self.device = Maestro.Device(con_port=False, ser_port=ser_port)
-            self.test_connection()
-            return
-        if ser_port is None:
-            print('+ No port found -- is the device connected?')
-            return
+        print('+ Serial Ports found:')
+        p.print(prefix='++')
+        serial_ports = p.get_ports(['Maestro', 'USB Serial'])
+        for serial_port in serial_ports:
+            print('+ Trying port:', serial_port)
+            self.device = Maestro.Device(con_port=False, ser_port=serial_port)
+            result = self.test_connection()
+            if result: return True
+        return False
 
     def disconnect_others(self):
         signature = str(type(self))

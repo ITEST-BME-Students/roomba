@@ -9,11 +9,12 @@ class Ports:
         ports = serial.tools.list_ports.comports()
         for p in ports: self.dict[p.description] = p.device
 
-    def print(self):
+    def print(self, prefix=''):
         self.update()
         keys = self.dict.keys()
+        if not keys: print('<No ports found>')
         for k in keys:
-            print(k, self.dict[k])
+            print(prefix, k, self.dict[k])
 
     def get_port(self, device):
         self.update()
@@ -21,6 +22,16 @@ class Ports:
         for k in keys:
             if device in k: return self.dict[k]
         return None
+
+    def get_ports(self, devices):
+        self.update()
+        keys = self.dict.keys()
+        found = []
+        for k in keys:
+            for d in devices:
+                if d in k: found.append(self.dict[k])
+        return found
+
 
 
 def get_port(device):
