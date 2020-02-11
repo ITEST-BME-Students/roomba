@@ -13,7 +13,8 @@ from matplotlib import pyplot
 from . import Logger
 from . import Misc
 from . import Kinematics
-from .Misc import read_filelist
+from . import SFTPClient
+
 
 def get_bumper_data(sensor_data, binary=False):
     """
@@ -54,7 +55,7 @@ class Client:
 
         self.remote = ip
         self.remote_python = 'python3'
-        self.remote_dir = Misc.convert_path('/home/pi/Desktop/server/')
+        self.remote_dir = Misc.convert_path('/home/pi/Desktop/PD2030')
         self.remote_script = 'start_server.py'
         self.local_dir = os.getcwd()
         self.user = 'pi'
@@ -72,7 +73,7 @@ class Client:
         transport = paramiko.Transport((self.remote, 22))
         transport.default_window_size = 10 * 1024 * 1024
         transport.connect(username=self.user, password=self.password)
-        self.sftp = paramiko.SFTPClient.from_transport(transport)
+        self.sftp = SFTPClient.SFTPClient.from_transport(transport)
 
         # Do Upload
         if do_upload: self.upload_files(verbose=True)
@@ -481,18 +482,7 @@ class Client:
         :return: None
         """
         if verbose: print('Uploading files')
-        self.remote_folder_exists(self.remote_dir)
-     
         if self.remote_folder_exists(self.remote_dir): self.delete_remote_folder(self.remote_dir)
         if not self.remote_folder_exists(self.remote_dir): self.sftp.mkdir(self.remote_dir)
-        files = read_filelist()
-        for local_file in files:
-            parts = os.path.split(local_file)
-            remote_file = os.path.join(self.remote_dir, parts[0], parts[1])
-            remote_dir = os.path.join(self.remote_dir, parts[0])
-            local_file = Misc.convert_path(local_file)
-            remote_file = Misc.convert_path(remote_file)
-            remote_dir = Misc.convert_path(remote_dir)
-            if not self.remote_folder_exists(remote_dir): self.sftp.mkdir(remote_dir)
-            self.sftp.put(local_file, remote_file)
-            if verbose: print(local_file, '---->', remote_file)
+        self.sftp.put_dir('PD2030', self.remote_dir)
+

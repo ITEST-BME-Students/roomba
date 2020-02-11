@@ -30,6 +30,7 @@ class MyRoomba:
 
     def set_display(self, text):
         text = str(text)
+        if len(text) == 0: txt = ' '
         text = text[0:4]
         text = text.ljust(4, ' ')
         self.robot.digit_led_ascii(text)
