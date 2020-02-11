@@ -1,7 +1,7 @@
-from PD2030.roomba import Client
 import time
-import random
-import numpy
+
+from PD2030.roomba import Client
+
 c = Client.Client(False)
 c.start_remote_server()
 c.toggle_logging(False)
