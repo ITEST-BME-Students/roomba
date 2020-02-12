@@ -1,3 +1,18 @@
+# Maestro settings
+
+The settings for the maestro board channels should be the following:
+
++ Servo
++ Servo
++ Output
++ Output
++ Input
++ Input
+
+The serial setting should be ```USB Dual Port```.
+
+Update the firmware to 1.04, which is compatible with Mac. see https://www.pololu.com/docs/0J40/4.f.
+
 # Prepare a working computer-robot system
 
 This file documents setting up a working computer/robot system
