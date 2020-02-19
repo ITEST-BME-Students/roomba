@@ -9,6 +9,8 @@ The settings for the maestro board channels should be the following:
 + Input
 + Input
 
+The range of the servo channels should be set to ```[544, 2400]```.
+
 The serial setting should be ```USB Dual Port```.
 
 Update the firmware to 1.04, which is compatible with Mac. see https://www.pololu.com/docs/0J40/4.f.
