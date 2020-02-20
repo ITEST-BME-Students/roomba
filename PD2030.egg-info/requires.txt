@@ -1,0 +1,5 @@
+paramiko
+easygui
+natsort
+pyserial
+numpy
