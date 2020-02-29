@@ -7,6 +7,32 @@ import pathlib
 from os import system, name
 
 
+
+def read_address_bank():
+    path = os.path.abspath(__file__)
+    dir_path = os.path.dirname(path)
+    address_bank_file = os.path.join(dir_path, 'address_bank.txt')
+    f = open(address_bank_file, 'r')
+    lines = f.readlines()
+    f.close()
+    bank = {}
+    for x in lines:
+        x = x.rstrip('\r')
+        x = x.rstrip('\n')
+        x = x.split(' ')
+        name = x[2]
+        ip = x[1]
+        bank[name] = ip
+    return bank
+
+def get_ip_by_name(name):
+    bank = read_address_bank()
+    keys = bank.keys()
+    if name not in keys: return name
+    ip = bank[name]
+    return ip
+
+
 def clear_console():
     # for windows
     if name == 'nt':
@@ -259,3 +285,5 @@ def read_filelist():
     new = []
     for x in files: new.append(x.rstrip('\n'))
     return new
+
+d = read_address_bank()

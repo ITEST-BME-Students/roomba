@@ -1,4 +1,6 @@
-# Maestro settings
+# Maestro Board
+
+## Maestro settings
 
 The settings for the maestro board channels should be the following:
 
@@ -15,11 +17,13 @@ The serial setting should be ```USB Dual Port```.
 
 Update the firmware to 1.04, which is compatible with Mac. see https://www.pololu.com/docs/0J40/4.f.
 
-# Prepare a working computer-robot system
+# Roomba
+
+## Prepare a working computer-robot system
 
 This file documents setting up a working computer/robot system
 
-## Host computer preparation
+### Host computer preparation
 
 + Install Anaconda Python 3.7: https://www.anaconda.com/distribution/
 + Additional Python packages (using Anaconda prompt):
@@ -29,20 +33,47 @@ This file documents setting up a working computer/robot system
 
 Run the ```minimal_example.py``` to test the robot.
 
-## Raspberry Pi preparation from an existing image
+### Raspberry Pi preparation from an existing image
 
-+ Copy disk image
++ Copy disk image.
 + Log in Raspberry Pi to give it a unique name
 + Attach Seeed Analog shield
 + Add GPIO marker shield
 
-# Installation of python components
+#### Change host name over ssh
 
-## Install pycreate2
+The following was taken from https://blog.jongallant.com/2017/11/raspberrypi-change-hostname/
+
+Step 1: ```sudo nano /etc/hostname```
+Step 2: ```sudo nano /etc/hosts```
+Step 3: ```sudo reboot```
+
+#### Change wifi settings over ssh
+If you need to changed the wifi settings over SSH/at the command line, use the following command 
+
+```sudo nano /etc/wpa_supplicant/wpa_supplicant.conf```
+
+and make sure the settings are the following:
+
+```
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+country=US
+
+network={
+        ssid="bme-net"
+        psk="fruitfly"
+        key_mgmt=WPA-PSK
+}
+```
+
+## Installation of python components
+
+### Install pycreate2
 
 ```https://github.com/MomsFriendlyRobotCompany/pycreate2```
 
-## ADC shield
+### ADC shield
 
 First, activate i2c on the raspberry pi in the settings. Next, install the python library. The instructions are found on this [wiki](http://wiki.seeedstudio.com/8-Channel_12-Bit_ADC_for_Raspberry_Pi-STM32F030/). In brief, this code should be run on the Raspberry Pi:
 
@@ -61,9 +92,7 @@ import adc_8chan_12bit
 
 The wiki lists the `` Pi_hat_adc`` class and its functions, which can be used to read out the ADC shield.
 
-
-
-## RPi.GPIO library
+### RPi.GPIO library
 
 The ```RPi.GPIO ``` libray is  installed per default for Python 3 on the raspberry. The Raspberry Pi provides a command ```pinout```  to get the pinout diagram:
 
@@ -90,7 +119,7 @@ GPIO26 (37) (38) GPIO20
    GND (39) (40) GPIO21
 ```
 
-## Adafruit mlx90640
+### Adafruit mlx90640
 
 Adafruit provides a Python library for this thermal camera.
 
@@ -100,39 +129,19 @@ installation:
 
 ```pip install adafruit-circuitpython-mlx90640```
 
-## PyQt 4
+### PyQt 4
 
 The joystick control script requires PyQt 4 on the host computer (not the Raspberry Pi), this can be installed as follows,
 
 ```conda install pyqt=4```
 
-# Compiling the Sphinx documentation
+## Compiling the Sphinx documentation
 
 ```make markdown```
 
-# Deprecated
 
-## Thermal sensor: adafruit amg88xx
-
-Adafruit provides a library for this sensor. It can be installed for Python 3 by running the following code on the Raspberry Pi.
-
-```sudo pip3 install adafruit-circuitpython-amg88xx```
-
-The orientation of the data is as follows: with the sensor oriented with the wires at the bottom, the image behaves like a camera image: 
-
-+ Pixels at the left of the image come from the left of the field of view.
-+ Pixels at the top come from the top of the field of view.
-
-```
-
-######
-##++##
-##++##
-######
-#WIRES#
- | | | |
-
-
------>
-
-```
+## Sensors
++ Whiskers: analog, 5V supply
++ Thermal camera: I2C
++ Makeblock light sensor: Analog sensor, 5V supply.
++ Makeblock sound sensor: Analog sensor, 5V supply.

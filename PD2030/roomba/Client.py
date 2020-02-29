@@ -47,13 +47,13 @@ class Client:
     :param ip: The IP address of the raspberry pi controlling the roomba robot.
     :param do_upload: Boolean, indicating whether code should be uploaded to the raspberry pi.
     """
-    def __init__(self, ip=False, do_upload=True):
+    def __init__(self, name=False, do_upload=True):
         self.logger = Logger.Logger('Client')
         self.logging = False
         self.logfile = None
         self.__stop_loop = False
 
-        self.remote = ip
+        self.remote = Misc.get_ip_by_name(name)
         self.remote_python = 'python3'
         self.remote_dir = Misc.convert_path('/home/pi/Desktop/PD2030')
         self.remote_script = 'start_server.py'
