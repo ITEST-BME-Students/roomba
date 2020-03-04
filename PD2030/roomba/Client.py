@@ -26,6 +26,9 @@ def get_bumper_data(sensor_data, binary=False):
     :param binary: boolean
     :return: list of bumpter values
     """
+    max_sensor_reading = 4905
+    numpy.interp
+
     a = sensor_data['light_bumper_left']
     b = sensor_data['light_bumper_front_left']
     c = sensor_data['light_bumper_center_left']
@@ -33,6 +36,13 @@ def get_bumper_data(sensor_data, binary=False):
     e = sensor_data['light_bumper_front_right']
     f = sensor_data['light_bumper_right']
     analog_data = numpy.array([a, b, c, d, e, f])
+    analog_data = analog_data / max_sensor_reading
+    analog_data[analog_data > 1] = 1
+    analog_data[analog_data < 0] = 0
+    # invert to make these into 'distance readings'
+    analog_data = 1 - analog_data
+    # map onto a much smaller range, as the sensors don't seem to use the whole range
+    analog_data = numpy.interp(analog_data, [0, 0.85, 1], [0, 0, 1])
     binary_data = numpy.array(sensor_data['light_bumper'])
     if binary: return binary_data
     if not binary: return analog_data
@@ -47,6 +57,7 @@ class Client:
     :param ip: The IP address of the raspberry pi controlling the roomba robot.
     :param do_upload: Boolean, indicating whether code should be uploaded to the raspberry pi.
     """
+
     def __init__(self, name=False, do_upload=True):
         self.logger = Logger.Logger('Client')
         self.logging = False
@@ -485,4 +496,3 @@ class Client:
         if self.remote_folder_exists(self.remote_dir): self.delete_remote_folder(self.remote_dir)
         if not self.remote_folder_exists(self.remote_dir): self.sftp.mkdir(self.remote_dir)
         self.sftp.put_dir('PD2030', self.remote_dir)
-
