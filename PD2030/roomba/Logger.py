@@ -8,6 +8,8 @@ from . import Misc
 class Logger:
     def __init__(self, name, file_name=None):
         self.logger = logging.getLogger(name)
+        if self.logger.hasHandlers: self.logger.handlers.clear()
+
         self.logger.setLevel(logging.INFO)
         # create file handler which logs even debug messages
         log_folder = os.path.join(os.getcwd(), 'logs')
@@ -36,6 +38,7 @@ class Logger:
         if level == 'c': self.logger.critical(text)
 
     def info(self, text):
+        print('called')
         self.logger.info(text)
 
     def warning(self, text):
