@@ -66,7 +66,7 @@ class Client:
 
         self.remote = Misc.get_ip_by_name(name)
         self.remote_python = 'python3'
-        self.remote_dir = Misc.convert_path('/home/pi/Desktop/PD2030')
+        self.remote_dir = Misc.convert_path('home/pi/Desktop/PD2030')
         self.remote_script = 'start_server.py'
         self.local_dir = os.getcwd()
         self.user = 'pi'
@@ -80,6 +80,7 @@ class Client:
         self.ssh = paramiko.SSHClient()
         self.ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         self.ssh.connect(self.remote, username=self.user, password=self.password, timeout=3)
+
         # Open FTP
         transport = paramiko.Transport((self.remote, 22))
         transport.default_window_size = 10 * 1024 * 1024
@@ -451,12 +452,12 @@ class Client:
 
         For student use: No
 
-        :param folder: The folder to be tested.
+        :param folder: The folder to be tested. In the format of the local OS.
         :return: Boolean
         """
-        folder = Misc.convert_path(folder)
+        linux_folder = Misc.linux_path(folder)
         try:
-            self.sftp.stat(folder)
+            self.sftp.stat(linux_folder)
         except IOError as e:
             if e.errno == errno.ENOENT: return False
             raise
@@ -469,19 +470,39 @@ class Client:
 
         For student use: No
 
-        :param folder: Folder to be deleted.
+        :param folder: Folder to be deleted. In the format of the local OS
         :return: None
         """
-        files = self.sftp.listdir(folder)
-        for file_name in files:
-            file_path = os.path.join(folder, file_name)
-            file_path = Misc.convert_path(file_path)
-            print(file_path, file_path)
-            try:
-                self.sftp.remove(file_path)
-            except IOError:
-                self.delete_remote_folder(file_path)
-        self.sftp.rmdir(folder)
+        linux_folder = Misc.linux_path(folder)
+        self.ssh.exec_command('rm -r ' + linux_folder)
+    
+    
+    def delete_remote_file(self, file_path):
+        """
+        Function to delete a remote file.
+
+        For student use: No
+
+        :file folder: File to be deleted. In the format of the local OS
+        :return: None
+        """
+        file_path = Misc.linux_path(file_path)
+        self.sftp.remove(file_path)
+        
+    
+    def make_remote_folder(self, folder):
+        """
+        Function to make a remote folder.
+
+        For student use: No
+
+        :param folder: Folder to be deleted. In the format of the local OS
+        :return: None
+        """
+        linux_folder = Misc.linux_path(folder)
+        self.sftp.mkdir(linux_folder)
+        
+   
 
     def upload_files(self, verbose=False):
         """
@@ -492,7 +513,13 @@ class Client:
         :param verbose: Boolean
         :return: None
         """
-        if verbose: print('Uploading files')
+        if verbose: self.print_log('Uploading files')
+        if verbose: self.print_log('Delete old files')
+        if verbose: self.print_log('Step 1')
         if self.remote_folder_exists(self.remote_dir): self.delete_remote_folder(self.remote_dir)
-        if not self.remote_folder_exists(self.remote_dir): self.sftp.mkdir(self.remote_dir)
-        self.sftp.put_dir('PD2030', self.remote_dir)
+        if verbose: self.print_log('Step 2')
+        if not self.remote_folder_exists(self.remote_dir): self.make_remote_folder(self.remote_dir)
+        
+        if verbose: self.print_log('Send new files')
+        linux_dir = Misc.linux_path(self.remote_dir)
+        self.sftp.put_dir('PD2030', linux_dir)

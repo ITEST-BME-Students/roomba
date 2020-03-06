@@ -270,7 +270,7 @@ def convert_path(path):
 def linux_path(path):
     p = pathlib.Path(path)
     p = pathlib.PurePosixPath(p)
-    p = str(p)
+    p = '/' + str(p)
     return p
 
 

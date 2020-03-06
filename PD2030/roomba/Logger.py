@@ -38,7 +38,6 @@ class Logger:
         if level == 'c': self.logger.critical(text)
 
     def info(self, text):
-        print('called')
         self.logger.info(text)
 
     def warning(self, text):
