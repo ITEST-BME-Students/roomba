@@ -25,7 +25,7 @@ def get_bumper_data(sensor_data, binary=False):
 
     :param sensor_data: raw sensor data
     :param binary: boolean
-    :return: list of bumpter values
+    :return: list of bumper values
     """
     max_sensor_reading = 4905
     numpy.interp
@@ -71,7 +71,7 @@ class Client:
 
         self.remote = Misc.get_ip_by_name(name)
         self.remote_python = 'python3'
-        self.remote_dir = '/home/pi/Desktop/PD2030'
+        self.remote_dir = '/home/pi/Desktop/PD2030' #linux format path, suited for Rpi
         self.remote_script = 'start_server.py'
         self.local_dir = os.getcwd()
         self.user = 'pi'
@@ -117,7 +117,7 @@ class Client:
             signature_other = str(type(other))
             if signature in signature_other:
                 if other.id != self.id:
-                    self.print_log(['Deleted instance', other.id])
+                    self.print_log(['Deleting instance', other.id])
                     try:
                         other.ssh.close()
                         other.sftp.close()
@@ -400,8 +400,6 @@ class Client:
         output = a + b
         output = output.replace('\n', '')
         self.print_log([output])
-
-        
 
     def stop_remote_server(self):
         """
