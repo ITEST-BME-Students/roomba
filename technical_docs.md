@@ -140,23 +140,3 @@ The joystick control script requires PyQt 4 on the host computer (not the Raspbe
 ```make markdown```
 
 
-## Sensors
-
-**Remember: the analog board is only 3V tolerant!!**
-
-
-**Whiskers: analog**
-
-Check whether this sensor can be fed 5V.
-
-**Thermal camera**
-
-Connects to I2C
-
-**Makeblock light sensor: Analog sensor, 5V supply**
-
-This is an analog sensor. This sensor should be  fed **3V only**. If fed with 5V, the output voltage goes up to 5V. However, the sensor can be be used with 3V input.
-
-**Makeblock sound sensor**
-
-This is an analog sensor. You can feed the sound sensor with 5V, the output signal does not go beyond about 2.5V.

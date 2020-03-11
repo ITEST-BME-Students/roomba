@@ -1,6 +1,10 @@
 from PD2030.roomba import Client
-robot = Client.Client(name='KITT', do_upload=False)
+import time
+
+name = 'WALL-E'
+
+robot = Client.Client(name=name, do_upload=True)
 robot.start_remote_server()
 robot.test_communication(message=['hello'])
 data = robot.get_adc()
-print(data)
+

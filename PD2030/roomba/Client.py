@@ -361,6 +361,18 @@ class Client:
             pyplot.show()
         return data
 
+    def get_sonar_distances(self):
+        """
+        Gets the distances from the two sonar sensors
+
+        For student use: Yes
+
+
+        :return: A list of 2 distances.
+        """
+        data = self.get_external_sensor('sonar')
+        return data
+
     ##################################
     # SERVER CONTROL FUNCTIONS
     ##################################
