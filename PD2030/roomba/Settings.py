@@ -1,6 +1,6 @@
 connect_to_robot = True
-connect_to_sonar = True
-connect_to_thermal = False
+connect_to_sonar = False
+connect_to_thermal = True
 
 #GPOI nnr
 
