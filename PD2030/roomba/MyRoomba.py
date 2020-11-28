@@ -9,7 +9,7 @@ class MyRoomba:
         if port is None: port = Ports.get_port('FT231X')
         self.robot = Create2(port)
         self.robot.start()
-        self.robot.safe()
+        self.robot.full()
         self.max_speed = 250
 
     def set_motors(self, left_speed, right_speed):
