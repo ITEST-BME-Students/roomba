@@ -1,13 +1,27 @@
-import pyaudio
-import wave
+# import pyaudio
 import numpy
+import sounddevice
 from matplotlib import pyplot
 
-freq_bands = [[100, 200], [200, 600], [600, 1400], [1400, 3200], [3200, 6800]]
+sounddevice.default.channels = 2
+sounddevice.default.dtype = 'int16'
+
+
+def make_frequency_bands():
+    bands = []
+    width = 1000
+    centers = numpy.linspace(500, 10000, 20)
+    for center in centers:
+        low = int(center - width / 2)
+        high = int(center + width / 2)
+        if low < 200: low = 200
+        bands.append([low, high])
+    return bands
+
 
 
 def my_fft(signal):
-    spectrum = numpy.fft.fft(signal, norm='ortho')
+    spectrum = numpy.fft.fft(signal)
     spectrum = numpy.abs(spectrum)
     frequencies = numpy.fft.fftfreq(signal.size, 1 / 44100)
     selected = frequencies > 0
@@ -26,45 +40,27 @@ def loudness(channel0, channel1, freq, band):
     low = band[0]
     high = band[1]
     selected = (freq > low) * (freq < high)
-    value0 = numpy.mean(numpy.abs(channel0[selected]))
-    value1 = numpy.mean(numpy.abs(channel1[selected]))
+    value0 = numpy.mean(numpy.abs(channel0[selected])) / 100
+    value1 = numpy.mean(numpy.abs(channel1[selected])) / 100
     return value0, value1
 
 
-def get_devices():
-    devices = []
-    p = pyaudio.PyAudio()
-    n = p.get_device_count()
-    for i in range(n):
-        device = p.get_device_info_by_index(i)
-        devices.append(device)
-    p.terminate()
-    return devices
-
-
 class SoundSensor:
-    def __init__(self, device_index=0, chunk=22050):
-        self.chunk = chunk
-        self.p = pyaudio.PyAudio()
-        self.stream = self.p.open(
-            format=pyaudio.paInt16,
-            channels=2,
-            rate=44100,
-            input=True,
-            frames_per_buffer=chunk,
-            input_device_index=device_index)
-        self.stream.stop_stream()
+    def __init__(self, duration=0.5, fs=44100):
+        self.duration = duration
+        self.sample_rate = fs
+        self.bands = make_frequency_bands()
 
     def get_data(self, plot=False):
-        self.stream.start_stream()
-        data = self.stream.read(self.chunk)
-        self.stream.stop_stream()
-        data = numpy.frombuffer(data, dtype=numpy.int16)
-        data = data.reshape((self.chunk, 2))
+        samples = int(self.sample_rate * self.duration)
+        fs = self.sample_rate
+        data = sounddevice.rec(samples, samplerate=fs, blocking=True)
         data = data.transpose()
-        data = numpy.flipud(data)  # to make channel 0 the left one
+        data = numpy.flipud(data)  # To make left channel, channel 0
         if plot:
-            pyplot.plot(data.transpose())
+            pyplot.plot(data[0, :])
+            pyplot.plot(data[1, :])
+            pyplot.legend(['Left', 'Right'])
             pyplot.show()
         return data
 
@@ -73,7 +69,7 @@ class SoundSensor:
         values0 = []
         values1 = []
         channel0, channel1, freq = my_fft_binaural(data)
-        for band in freq_bands:
+        for band in self.bands:
             v0, v1 = loudness(channel0, channel1, freq, band)
             values0.append(v0)
             values1.append(v1)
@@ -83,8 +79,3 @@ class SoundSensor:
             pyplot.legend(['Left', 'Right'])
             pyplot.show()
         return values0, values1
-
-    def __del__(self):
-        self.stream.stop_stream()
-        self.stream.close()
-        self.p.terminate()
