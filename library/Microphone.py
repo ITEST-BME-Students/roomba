@@ -2,23 +2,23 @@
 import numpy
 import sounddevice
 from matplotlib import pyplot
-
+from library import Settings
 sounddevice.default.channels = 2
 sounddevice.default.dtype = 'int16'
 
-
 def make_frequency_bands():
     bands = []
-    width = 1000
-    centers = numpy.linspace(500, 10000, 20)
+    width = Settings.microphone_band_width
+    a = Settings.microphone_band_centers[0]
+    b = Settings.microphone_band_centers[1]
+    c = Settings.microphone_band_centers[2]
+    centers = numpy.linspace(a, b, c)
     for center in centers:
         low = int(center - width / 2)
         high = int(center + width / 2)
         if low < 200: low = 200
         bands.append([low, high])
     return bands
-
-
 
 def my_fft(signal):
     spectrum = numpy.fft.fft(signal)
@@ -45,7 +45,7 @@ def loudness(channel0, channel1, freq, band):
     return value0, value1
 
 
-class SoundSensor:
+class Microphone:
     def __init__(self, duration=0.5, fs=44100):
         self.duration = duration
         self.sample_rate = fs
@@ -78,4 +78,8 @@ class SoundSensor:
             pyplot.plot(values1)
             pyplot.legend(['Left', 'Right'])
             pyplot.show()
+        values0 = numpy.array(values0)
+        values1 = numpy.array(values1)
+        values0 = numpy.round(values0)
+        values1 = numpy.round(values1)
         return values0, values1

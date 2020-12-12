@@ -14,7 +14,7 @@ def get_bumper_data(sensor_data):
     return analog_data
 
 
-class MyRoomba:
+class Roomba:
     def __init__(self, port=None):
         if port is None: port = Ports.get_port('FT231X')
         self.robot = Create2(port)
@@ -75,7 +75,7 @@ class MyRoomba:
 if __name__ == "__main__":
     import time
 
-    roomba = MyRoomba()
+    roomba = Roomba()
     roomba.set_display('tet')
     d = roomba.get_sensors()
     roomba.kinematic(rot_speed=20)

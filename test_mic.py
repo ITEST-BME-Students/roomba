@@ -1,16 +1,20 @@
-from library import Microphone
+# # from library import Microphone
+# # s = Microphone.SoundSensor()
+# # s.get_data(plot=True)
 #
-# devices = Microphone.get_devices()
-# print(devices)
-# from matplotlib import pyplot
-# import sounddevice
-# sounddevice.default.samplerate = 44100
-# sounddevice.default.channels = 2
-# sounddevice.default.device = 0
-#
-# myrecording = sounddevice.rec(int(2 * 44100), blocking=True)
-# pyplot.plot(myrecording)
-# pyplot.show()
+# from library import Camera
+# c = Camera.Camera()
+# p = c.get_section_values()
 
-s = Microphone.SoundSensor()
-s.get_data(plot=True)
+from library import Roomba
+from library import Microphone
+from library import Camera
+from library import Thermal
+
+t = Thermal.Thermal()
+x = t.look()
+print(x)
+# m = Microphone.Microphone()
+# c = Camera.Camera()
+# r = m.listen()
+# v = c.look()
