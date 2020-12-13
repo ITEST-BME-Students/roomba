@@ -15,23 +15,28 @@ class Thermal:
         self.msg = ("MLX addr detected on I2C", [hex(i) for i in self.mlx.serial_number])
         self.frame = [0] * 768
 
-    def get_snapshot(self):
+    def get_data(self, plot=False):
         self.mlx.getFrame(self.frame)
         self.frame = list(map(int, self.frame))
         data = numpy.array(self.frame)
         data = data.reshape((24, 32))
         data = numpy.fliplr(data)
+        if plot:
+            pyplot.imshow(data)
+            pyplot.show()
         return data
 
     def look(self):
+        operation = Settings.thermal_operation
         n = Settings.thermal_sections
-        snapshot = self.get_snapshot()
+        snapshot = self.get_data()
         sections = numpy.linspace(0,32, n)
         sections = sections.astype(int)
         result = numpy.zeros((n - 1, 3))
         for i in range(n - 1):
             slice = snapshot[:, sections[i]:sections[i + 1]]
-            slice = numpy.max(slice, axis=(0, 1))
+            if operation == 'max': slice = numpy.max(slice, axis=(0, 1))
+            if operation == 'mean': slice = numpy.mean(slice, axis=(0, 1))
             result[i, :] = slice
         if Settings.camera_greyscale: result = numpy.mean(result, axis=1)
         result = numpy.round(result)
