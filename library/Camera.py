@@ -6,16 +6,6 @@ from library import RegionInterest
 from matplotlib import pyplot
 
 
-def YUV2RGB(yuv):
-    m = numpy.array([[1.0, 1.0, 1.0],
-                  [-0.000007154783816076815, -0.3441331386566162, 1.7720025777816772],
-                  [1.4019975662231445, -0.7141380310058594, 0.00001542569043522235]])
-
-    rgb = numpy.dot(yuv, m)
-    rgb[:, :, 0] -= 179.45477266423404
-    rgb[:, :, 1] += 135.45870971679688
-    rgb[:, :, 2] -= 226.8183044444304
-    return rgb
 
 
 class Camera:
@@ -23,7 +13,8 @@ class Camera:
         self.w = Settings.camera_width
         self.h = Settings.camera_height
         self.centers = Settings.camera_roi
-        self.regions = RegionInterest.Regions(width=self.w, height=self.h, centers=self.centers)
+        self.fov = Settings.camera_fov
+        self.regions = RegionInterest.Regions(width=self.w, height=self.h, fov=self.fov, centers=self.centers)
         self.camera = None
         self.init_camera()
 
@@ -52,9 +43,9 @@ class Camera:
             pyplot.show()
         return output
 
-    def look(self, plot=False):
+    def look(self, plot=False, as_frame=False):
         snapshot = self.get_data()
-        result = self.regions.get_stats(snapshot)
+        result = self.regions.get_stats(snapshot, as_frame=as_frame)
         if plot:
             pyplot.plot(result)
             pyplot.show()

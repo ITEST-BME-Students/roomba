@@ -34,6 +34,7 @@ class Roomba:
         self.set_motors(0, 0)
 
     def kinematic(self, lin_speed=0, rot_speed=0):
+        rot_speed = rot_speed * -1
         left, right, _, _ = Kinematics.kinematics(lin_speed, rot_speed)
         self.set_motors(left, right)
 
@@ -43,6 +44,7 @@ class Roomba:
         self.robot.drive_distance(meter, speed, True)
 
     def turn(self, degrees, speed=100):
+        degrees = degrees * -1
         self.robot.turn_angle(degrees, speed)
 
     def set_display(self, text):

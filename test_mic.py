@@ -10,7 +10,7 @@ from library import Roomba
 from library import Microphone
 from library import Camera
 from library import Thermal
-#r = Roomba.Roomba()
+r = Roomba.Roomba()
 #m = Microphone.Microphone()
 c = Camera.Camera()
 
