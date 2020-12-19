@@ -6,6 +6,7 @@
 + ```pip3 install sounddevice```
 + ```pip3 install matplotlib```
 + ```sudo apt install python3-scipy```
++ ```sudo apt install python3-pandas```
 
 ## Reference frame robot
 

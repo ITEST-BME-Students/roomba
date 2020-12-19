@@ -36,7 +36,8 @@ class Regions:
         pyplot.show()
 
     def create_mask(self, center):
-        term1 = (self.horizontal_grid - center[0]) ** 2
+        scale = self.width / self.height
+        term1 = ((self.horizontal_grid - center[0]) * scale) ** 2
         term2 = (self.vertical_grid - center[1]) ** 2
         distance = (term1 + term2) ** 0.5
         mask = 1.0 * (distance < center[2])
@@ -61,6 +62,8 @@ class Regions:
             pyplot.imshow(x)
             pyplot.title(i - 1)
             i = i + 1
+            ax = pyplot.gca()
+            ax.set_aspect('equal')
         pyplot.tight_layout()
         pyplot.show()
 
@@ -76,5 +79,8 @@ class Regions:
             result = numpy.round(result).astype(int)
             result = list(result)
             results.append(result)
-        if as_frame: results = pandas.DataFrame(results)
+        if as_frame:
+            results = pandas.DataFrame(results)
+            if results.shape[1] == 1: results.columns = ['Channel0']
+            if results.shape[1] == 3: results.columns = ['Channel0', 'Channel1' , 'Channel3']
         return results
