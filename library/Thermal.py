@@ -34,9 +34,9 @@ class Thermal:
 
     def look(self, plot=False, as_frame=False):
         snapshot = self.get_data()
-        result = self.regions.get_stats(snapshot, as_frame=as_frame)
+        result = self.regions.get_stats(snapshot)
         if plot:
-            pyplot.plot(result)
+            pyplot.plot(result, 'o-k')
             pyplot.show()
         return result
 

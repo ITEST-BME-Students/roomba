@@ -1,5 +1,5 @@
 from library import RegionInterest
-
+import numpy
 connect_to_robot = True
 connect_to_sonar = False
 connect_to_thermal = True
@@ -21,17 +21,18 @@ thermal_roi = [[-50, 0, 10],
                [10, 0, 10],
                [20, 0, 10],
                [50, 0, 10]]
-thermal_fov = 110 #width of FOV in angles
+thermal_fov = 110  # width of FOV in angles
 
 # Microphone
 microphone_band_centers = [500, 20000, 10]  # start, end, n
 microphone_band_width = 1000
+microphone_itd_band = [200, 4000]
 
 # Camera settings
 camera_width = 160
 camera_height = 80
 camera_iso = 800
-camera_shutter_speed = 10000  # in microseconds
+camera_shutter_speed = 7500  # in microseconds
 camera_roi = [[-50, 0, 20],
               [-40, 0, 20],
               [-30, 0, 20],
@@ -43,15 +44,16 @@ camera_roi = [[-50, 0, 20],
               [+30, 0, 20],
               [+40, 0, 20],
               [+50, 0, 20]]
-camera_greyscale = True
-camera_fov = 160 #width of FOV in angles
+#camera_channel_matrix = numpy.eye(3)
+camera_channel_matrix = numpy.array([[1],[1],[1]])
+camera_fov = 160  # width of FOV in angles
 
 if __name__ == "__main__":
-    camera_regions = RegionInterest.Regions(200,100, fov=camera_fov)
-    camera_regions.set_centers(camera_roi)
-    camera_regions.plot_current_masks()
+    print(camera_channel_matrix)
+    #camera_regions = RegionInterest.Regions(200, 100, fov=camera_fov)
+    #camera_regions.set_centers(camera_roi)
+    #camera_regions.plot_current_masks()
 
-    thermal_regions = RegionInterest.Regions(200,100, fov=thermal_fov)
-    thermal_regions.set_centers(thermal_roi)
-    thermal_regions.plot_current_masks()
-
+    #thermal_regions = RegionInterest.Regions(200, 100, fov=thermal_fov)
+    #thermal_regions.set_centers(thermal_roi)
+    #thermal_regions.plot_current_masks()

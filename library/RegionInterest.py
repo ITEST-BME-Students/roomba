@@ -1,7 +1,6 @@
-import numpy
 import math
-import pandas
-from PIL import Image
+
+import numpy
 from matplotlib import pyplot
 
 
@@ -74,7 +73,7 @@ class Regions:
         pyplot.tight_layout()
         pyplot.show()
 
-    def get_stats(self, image, as_frame=False):
+    def get_stats(self, image):
         results = []
         image = make3d(image)
         layers = image.shape[2]
@@ -86,11 +85,6 @@ class Regions:
             result = numpy.round(result).astype(int)
             result = list(result)
             results.append(result)
-        if as_frame:
-            results = pandas.DataFrame(results)
-            if results.shape[1] == 1: results.columns = ['Channel0']
-            if results.shape[1] == 3: results.columns = ['Channel0', 'Channel1', 'Channel3']
-        if not as_frame:
-            results = numpy.array(results)
-            results = numpy.squeeze(results)
+        results = numpy.array(results)
+        results = numpy.squeeze(results)
         return results

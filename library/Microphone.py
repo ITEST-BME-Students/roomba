@@ -93,11 +93,12 @@ class LagDetector:
 # At 0.235 ms diff and 44100 fs, max lag in samples is 10.36
 
 class Microphone:
-    def __init__(self, duration=0.5, fs=44100):
-        self.duration = duration
-        self.sample_rate = fs
+    def __init__(self):
+        self.duration = 0.5
+        self.sample_rate = 44100
         self.bands = make_frequency_bands()
-        self.lag_detector = LagDetector(200, 4000, fs=fs)
+        self.itd_band = Settings.microphone_itd_band
+        self.lag_detector = LagDetector(self.itd_band[0], self.itd_band[1], fs=self.sample_rate)
 
     def get_data(self, plot=False):
         samples = int(self.sample_rate * self.duration)
@@ -112,21 +113,21 @@ class Microphone:
             pyplot.show()
         return data
 
-    def listen(self, plot=False):
+    def listen(self, iid=True, plot=False):
         data = self.get_data()
-        values0 = []
-        values1 = []
+        left_values = []
+        right_values = []
         channel0, channel1, freq = my_fft_binaural(data)
         for band in self.bands:
-            v0, v1 = loudness(channel0, channel1, freq, band)
-            values0.append(v0)
-            values1.append(v1)
+            left, right = loudness(channel0, channel1, freq, band)
+            left_values.append(left)
+            right_values.append(right)
         lag, y1, y2 = self.lag_detector.find_lag(data)
 
         if plot:
             pyplot.subplot(2, 1, 1)
-            pyplot.plot(values0)
-            pyplot.plot(values1)
+            pyplot.plot(left_values)
+            pyplot.plot(right_values)
             pyplot.legend(['Left', 'Right'])
             pyplot.subplot(2, 1, 2)
             pyplot.plot(y1, alpha=0.25)
@@ -134,8 +135,12 @@ class Microphone:
             pyplot.legend(['Left', 'Right'])
             pyplot.show()
 
-        values0 = numpy.array(values0)
-        values1 = numpy.array(values1)
-        values0 = numpy.round(values0)
-        values1 = numpy.round(values1)
-        return values0, values1, lag
+        # lag: left leading is negative
+        # iid: negative is left > right
+
+        left_values = numpy.array(left_values)
+        right_values = numpy.array(right_values)
+        left_values = numpy.round(left_values)
+        right_values = numpy.round(right_values)
+        if iid: return right_values - left_values, lag
+        return left_values, right_values, lag
