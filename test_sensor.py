@@ -9,11 +9,14 @@
 from library import Roomba
 from library import Microphone
 from library import Camera
+from library import Device
+from library import Thermal
+
 #from library import Thermal
 #r = Roomba.Roomba()
-m = Microphone.Microphone()
-#c = Camera.Camera()
-#c.get_data(plot=True)
+#m = Microphone.Microphone()
+c = Camera.Camera()
+c.get_data(plot=True)
 
 #snd = m.listen(plot=True)
 #vis = c.look(plot=True)
@@ -22,3 +25,6 @@ m = Microphone.Microphone()
 #r = t.look()
 
 #c.look()
+
+#d = Device.AnalogInput()
+#d.sense(plot=True)

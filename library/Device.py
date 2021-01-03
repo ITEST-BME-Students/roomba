@@ -5,14 +5,15 @@ Created on Sat Jun 24 09:42:38 2017
 
 @author: dieter
 """
-from . import Util
-from . import Maestro
+
+from library import Maestro
 import gc
+import numpy
+from library import Ports
+from matplotlib import pyplot
 
-from ..roomba import Ports
 
-
-class BoardDevice:
+class AnalogInput:
     def __init__(self, ser_port=False, verbose=False):
         self.id = id(self)
         self.verbose = verbose
@@ -43,13 +44,13 @@ class BoardDevice:
     def manual_connect(self, ser_port):
         self.device = Maestro.Device(con_port=False, ser_port=ser_port)
 
-    def auto_connect(self):
+    def auto_connect(self, verbose=False):
         p = Ports.Ports()
-        print('+ Serial Ports found:')
-        p.print(prefix='++')
+        if verbose: print('+ Serial Ports found:')
+        if verbose: p.print(prefix='++')
         serial_ports = p.get_ports(['Maestro', 'USB Serial'])
         for serial_port in serial_ports:
-            print('+ Trying port:', serial_port)
+            if verbose: print('+ Trying port:', serial_port)
             self.device = Maestro.Device(con_port=False, ser_port=serial_port)
             result = self.test_connection()
             if result: return True
@@ -68,3 +69,14 @@ class BoardDevice:
             self.device.__del__()
         except Exception as error:
             if self.verbose: print('+ ERROR:', error)
+
+    def sense(self, plot=False):
+        values = []
+        for i in range(6):
+            v = self.device.get_position(i)
+            values.append(v)
+        values = numpy.array(values)
+        if plot:
+            pyplot.plot(values,'o-k')
+            pyplot.show()
+        return values

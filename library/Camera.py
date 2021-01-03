@@ -4,6 +4,7 @@ import numpy
 from library import Settings
 from library import RegionInterest
 from matplotlib import pyplot
+from fractions import Fraction
 
 
 class Camera:
@@ -17,16 +18,13 @@ class Camera:
         self.init_camera()
 
     def init_camera(self, warm_up=2):
-        self.camera = picamera.PiCamera(resolution=(self.w, self.h), framerate=5)
+        self.camera = picamera.PiCamera()
+        self.camera.resolution = (self.w, self.h)
+        self.camera.framerate = Settings.camera_frame_rate
         self.camera.iso = Settings.camera_iso
+        self.camera.shutter_speed = 6000000 # slowest possible, the camera adjust aut. to match framerate
         # Give the camera some warm-up time
         time.sleep(warm_up)
-        # Now fix the values
-        self.camera.shutter_speed = Settings.camera_shutter_speed
-        self.camera.exposure_mode = 'off'
-        g = self.camera.awb_gains
-        self.camera.awb_mode = 'off'
-        self.camera.awb_gains = g
 
     def close_camera(self):
         self.camera.close()
@@ -34,8 +32,11 @@ class Camera:
     def get_data(self, plot=False):
         output = numpy.empty((self.h, self.w, 3), dtype=numpy.uint8)
         self.camera.capture(output, 'rgb', use_video_port=True)
+        output = output.astype('float32')
+        output = output * Settings.camera_gain
+        output[output > 255] = 255
         if plot:
-            pyplot.imshow(output)
+            pyplot.imshow(output/255)
             pyplot.show()
         return output
 
@@ -44,7 +45,11 @@ class Camera:
         result = self.regions.get_stats(snapshot)
         result = numpy.matmul(result, Settings.camera_channel_matrix)
         if plot:
-            pyplot.plot(result)
+            n = result.shape[1]
+            for i in range(n): pyplot.plot(result[:, i], Settings.camera_channel_line_specs[i])
+            pyplot.legend(Settings.camera_channel_labels)
+            pyplot.xlabel('Region number')
+            pyplot.ylabel('Intensity')
             pyplot.show()
         return result
 

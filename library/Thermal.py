@@ -37,6 +37,8 @@ class Thermal:
         result = self.regions.get_stats(snapshot)
         if plot:
             pyplot.plot(result, 'o-k')
+            pyplot.xlabel('Region Number')
+            pyplot.ylabel('Intensity')
             pyplot.show()
         return result
 
