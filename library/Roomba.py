@@ -19,7 +19,7 @@ class Roomba:
         if port is None: port = Ports.get_port('FT231X')
         self.robot = Create2(port)
         self.robot.start()
-        self.robot.full()
+        self.robot.safe()
         self.max_speed = 250
 
     def set_motors(self, left_speed, right_speed):
