@@ -1,5 +1,3 @@
-[toc]
-
 # Summary of flow control
 
 
@@ -7,14 +5,14 @@
 
 Syntax: 
 
-```
+```python
 if <condition>:
 	<code inside the if statement>
 ```
 
 Example:
 
-```
+```python
 value = 100
 if value < 100:
 	print('smaller than 100')
@@ -28,21 +26,21 @@ More examples:
 
 Syntax: 
 
-```
+```python
 for <variable> in <collection>:
 	<code inside the for loop>
 ```
 
 Example  1 (executing something n times):
 
-```
+```python
 for i in range(n):
 	print(n)
 ```
 
 Example 2:
 
-```
+```python
 my_list = [10, 23, 45, 10, 7]
 for i in my_list:
 	result = i * 3
@@ -57,14 +55,14 @@ More examples:
 
 Syntax: 
 
-```
+```python
 while <collection>:
 	<code inside the while loop>
 ```
 
 Example  1 (executing something forever):
 
-```
+```python
 import random
 while True:
 	random_number = random.random()
@@ -73,7 +71,7 @@ while True:
 
 Example  2:
 
-```
+```python
 import random
 random_number = 0
 while random_number < 0.5:
@@ -92,14 +90,14 @@ More examples:
 
 ## Creating a robot
 
-```angular2html
+```python
 from library import Roomba
 my_robot = Roomba.Roomba()
 ```
 
 The robot should respond with the following message, showing that connection was made.
 
-```angular2html
+```
 ----------------------------------------
  Create opened serial connection
    port: /dev/ttyUSB0
@@ -135,7 +133,7 @@ Stops the robot
 
 The camera on the robot has an 160 degree field of view. The following code gets data from the camera. It returns values from a number of areas within the 160 degree field of the camera. Depending on the settings, the data can be RGB data or grayscale data (or any combination of the camera's RGB values).
 
-```
+```python
 from library import Camera
 camera = Camera.Camera()
 data = camera.look()
@@ -145,7 +143,7 @@ data = camera.look()
 
 The thermal camera on the robot has an 110 degree field of view. The following code gets data from the thermal camera. It returns values from a number of areas within the field of the camera. The data is in degrees celcius.
 
-```
+```python
 from library import Thermal
 thermal = Thermal.Thermal()
 data = thermal.look()
@@ -161,7 +159,7 @@ The robot features two micophones. The following code returns data from the micr
 
 The frequency bands across which these data are computed depend on the settings.
 
-```
+```python
 from library import Microphone
 microphone = Microphone.Microphone()
 time_difference, left, right = microphone.listen()
@@ -171,7 +169,7 @@ time_difference, left, right = microphone.listen()
 
 The robot's sonar sensors measure the distance to the nearest object that returns a detectable echo. The following code gets the distance as detected by the two sensors.
 
-```
+```python
 from library import Sonar
 sonar = Sonar.Sonar()
 left, right = sonar.get_data()
