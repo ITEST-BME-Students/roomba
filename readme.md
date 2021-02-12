@@ -1,3 +1,87 @@
+# Summary of flow control
+
+### The `if` statement
+
+Syntax: 
+
+```
+if <condition>:
+	<code inside the if statement>
+```
+
+Example:
+
+```
+value = 100
+if value < 100:
+	print('smaller than 100')
+```
+
+More examples:
+
++ [https://www.w3schools.com/python/python_conditions.asp](https://www.w3schools.com/python/python_conditions.asp)
+
+### The `for` loop
+
+Syntax: 
+
+```
+for <variable> in <collection>:
+	<code inside the for loop>
+```
+
+Example  1 (executing something n times):
+
+```
+for i in range(n):
+	print(n)
+```
+
+Example 2:
+
+```
+my_list = [10, 23, 45, 10, 7]
+for i in my_list:
+	result = i * 3
+	print(result)
+```
+
+More examples:
+
++ [https://www.w3schools.com/python/python_for_loops.asp](https://www.w3schools.com/python/python_for_loops.asp)
+
+### The `while` loop
+
+Syntax: 
+
+```
+while <collection>:
+	<code inside the while loop>
+```
+
+Example  1 (executing something forever):
+
+```
+import random
+while True:
+	random_number = random.random()
+	print(random_number)
+```
+
+Example  2:
+
+```
+import random
+random_number = 0
+while random_number < 0.5:
+	random_number = random.random()
+	print(random_number)
+```
+
+More examples:
+
++ [https://www.w3schools.com/python/python_while_loops.asp](https://www.w3schools.com/python/python_while_loops.asp)
+
 # Robot commands
 
 ## Creating a robot
@@ -19,8 +103,6 @@ The robot should respond with the following message, showing that connection was
 
 ## Commands controlling the robot motion
 
-### Motion commands
-
 + `my_robot.set_motors(left_speed, right_speed)`
 
 Sets the speed of the two motors, in millimeter per second.
@@ -41,8 +123,45 @@ Makes the robot turn a number of degrees. Positive angles are clockwise (right) 
 
 Stops the robot
 
+## Sensor commands
 
-### Additional commands
+### Camera
+
+The camera on the robot has an 160 degree field of view. The following code gets data from the camera. It returns values from a number of areas within the 160 degree field of the camera. Depending on the settings, the data can be RGB data or grayscale data (or any combination of the camera's RGB values).
+
+```
+from library import Camera
+camera = Camera.Camera()
+data = camera.look()
+```
+
+### Thermal camera
+
+The thermal camera on the robot has an 110 degree field of view. The following code gets data from the thermal camera. It returns values from a number of areas within the field of the camera. The data is in degrees celcius.
+
+```
+from library import Thermal
+thermal = Thermal.Thermal()
+data = thermal.look()
+```
+
+### Microphone
+
+The robot features two micophones. The following code returns data from the microphones. The `listen()` function returns three sets of values:
+
+1. The estimated interaural time difference
+2. The loudness of the left microphone, for different frequency bands
+3. The loudness of the right microphone, for different frequency bands
+
+The frequency bands across which these data are computed depend on the settings.
+
+```
+from library import Microphone
+microphone = Microphone.Microphone()
+time_difference, left, right = microphone.listen()
+```
+
+## Additional commands
 
 + `my_robot.set_display(text)`
 

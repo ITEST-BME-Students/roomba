@@ -1,5 +1,8 @@
 # Roomba
 
+## iRobot Create  2 Open Interface
+[https://cdn-shop.adafruit.com/datasheets/create_2_Open_Interface_Spec.pdf](https://cdn-shop.adafruit.com/datasheets/create_2_Open_Interface_Spec.pdf)
+
 ## Required libraries:
 
 + ```pip3 install adafruit-circuitpython-mlx90640```
