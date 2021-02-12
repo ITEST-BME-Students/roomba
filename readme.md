@@ -1,5 +1,7 @@
 # Summary of flow control
 
+---
+
 ### The `if` statement
 
 Syntax: 
@@ -82,7 +84,10 @@ More examples:
 
 + [https://www.w3schools.com/python/python_while_loops.asp](https://www.w3schools.com/python/python_while_loops.asp)
 
+
 # Robot commands
+
+---
 
 ## Creating a robot
 
@@ -101,7 +106,7 @@ The robot should respond with the following message, showing that connection was
 ----------------------------------------
 ```
 
-## Commands controlling the robot motion
+## Motion commands
 
 + `my_robot.set_motors(left_speed, right_speed)`
 
@@ -159,6 +164,16 @@ The frequency bands across which these data are computed depend on the settings.
 from library import Microphone
 microphone = Microphone.Microphone()
 time_difference, left, right = microphone.listen()
+```
+
+### Sonar
+
+The robot's sonar sensors measure the distance to the nearest object that returns a detectable echo. The following code gets the distance as detected by the two sensors.
+
+```
+from library import Sonar
+sonar = Sonar.Sonar()
+left, right = sonar.get_data()
 ```
 
 ## Additional commands
