@@ -1,6 +1,7 @@
+[toc]
+
 # Summary of flow control
 
----
 
 ### The `if` statement
 
@@ -87,7 +88,7 @@ More examples:
 
 # Robot commands
 
----
+
 
 ## Creating a robot
 
@@ -194,6 +195,3 @@ Gets the 6 values of the onboard obstacle detection sensors (bumpers). This func
 6. right
 
 In theory, the sensors values range from 0 to 4095, with larger values indicating closer obstacles detected by the sensor. Typical values without obstacle range up to ~20.
-
-
-
