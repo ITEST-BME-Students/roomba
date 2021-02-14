@@ -7,7 +7,7 @@ connect_to_sonar = False
 connect_to_thermal = True
 
 
-# GPOI nnr
+# GPOI nr
 
 trigger_pin1 = 26
 trigger_pin2 = 19
@@ -34,8 +34,8 @@ microphone_itd_band = [200, 4000]
 # Camera settings
 camera_width = 160
 camera_height = 80
-camera_iso = 400 # higher iso increases brightness
-camera_frame_rate = Fraction(2,1) # frames per second, min = 1/6. Lower frame rate = brighter
+camera_iso = 200 #400 higher iso increases brightness
+camera_frame_rate = Fraction(50,1) # frames per second, min = 1/6. Lower frame rate = brighter
 camera_gain = 1 # software gain applied after capturing the image
 
 camera_roi = [[-50, 0, 20],

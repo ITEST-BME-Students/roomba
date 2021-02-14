@@ -107,9 +107,13 @@ class Microphone:
         data = data.transpose()
         data = numpy.flipud(data)  # To make left channel, channel 0
         if plot:
-            pyplot.plot(data[0, :])
-            pyplot.plot(data[1, :])
+            mx = numpy.max(numpy.abs(data)) * 1.1
+            pyplot.plot(data[0, :], alpha=0.5)
+            pyplot.plot(data[1, :], alpha=0.5)
             pyplot.legend(['Left', 'Right'])
+            pyplot.xlabel('Samples')
+            pyplot.ylabel('Amplitude')
+            pyplot.ylim(-mx, mx)
             pyplot.show()
         return data
 
@@ -129,10 +133,17 @@ class Microphone:
             pyplot.plot(left_values)
             pyplot.plot(right_values)
             pyplot.legend(['Left', 'Right'])
+            pyplot.xlabel('Frequency band')
+            pyplot.ylabel('Amplitude')
+            pyplot.title('Spectrum')
             pyplot.subplot(2, 1, 2)
             pyplot.plot(y1, alpha=0.25)
             pyplot.plot(y2, alpha=0.25)
             pyplot.legend(['Left', 'Right'])
+            pyplot.xlabel('Samples')
+            pyplot.ylabel('Amplitude')
+            pyplot.title('Waveforms')
+            pyplot.tight_layout()
             pyplot.show()
 
         # lag: left leading is negative

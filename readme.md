@@ -151,18 +151,16 @@ data = thermal.look()
 
 ### Microphone
 
-The robot features two micophones. The following code returns data from the microphones. The `listen()` function returns three sets of values:
+The robot features two micophones. The following code returns data from the microphones. The `listen()` function returns two sets of values:
 
-1. The estimated interaural time difference
-2. The loudness of the left microphone, for different frequency bands
-3. The loudness of the right microphone, for different frequency bands
+1. The loudness of the right microphone, for different frequency bands minus the loudness of the right microphone, for different frequency bands
 
-The frequency bands across which these data are computed depend on the settings.
+2. The estimated interaural time difference (left leading sounds produce negative values)
 
 ```python
 from library import Microphone
 microphone = Microphone.Microphone()
-time_difference, left, right = microphone.listen()
+loudness_difference, time_difference = microphone.listen()
 ```
 
 ### Sonar
@@ -172,7 +170,7 @@ The robot's sonar sensors measure the distance to the nearest object that return
 ```python
 from library import Sonar
 sonar = Sonar.Sonar()
-left, right = sonar.get_data()
+left, right = sonar.distance()
 ```
 
 ## Additional commands

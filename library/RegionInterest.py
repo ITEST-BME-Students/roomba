@@ -73,6 +73,19 @@ class Regions:
         pyplot.tight_layout()
         pyplot.show()
 
+    def plot_current_masks_single_figure(self):
+        i = 1
+        matrix = self.masks[0] * 0
+        for x in self.masks:
+            matrix[x==1] = i
+            i = i + 1
+        pyplot.imshow(matrix, cmap='Set3')
+        #pyplot.colorbar()
+        pyplot.title('Regions')
+        ax = pyplot.gca()
+        ax.set_aspect('equal')
+        pyplot.show()
+
     def get_stats(self, image):
         results = []
         image = make3d(image)

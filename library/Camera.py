@@ -1,6 +1,7 @@
 import picamera
 import time
 import numpy
+import copy
 from library import Settings
 from library import RegionInterest
 from matplotlib import pyplot
@@ -29,9 +30,10 @@ class Camera:
     def close_camera(self):
         self.camera.close()
 
-    def get_data(self, plot=False):
+    def get_data(self, plot=False, raw=False):
         output = numpy.empty((self.h, self.w, 3), dtype=numpy.uint8)
         self.camera.capture(output, 'rgb', use_video_port=True)
+        if raw: return copy.copy(output * 1)
         output = output.astype('float32')
         output = output * Settings.camera_gain
         output[output > 255] = 255
