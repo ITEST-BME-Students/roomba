@@ -12,8 +12,14 @@ class Sonar:
         self.trigger_pin2 = Settings.trigger_pin2
         # The distance sensor class has some code that avoids interference between multiple sensors
         self.sensors = sensors
-        if 1 in sensors: self.sonar1 = gpiozero.DistanceSensor(echo=self.echo_pin1, trigger=self.trigger_pin1, max_distance=self.max_distance)
-        if 2 in sensors: self.sonar2 = gpiozero.DistanceSensor(echo=self.echo_pin2, trigger=self.trigger_pin2, max_distance=self.max_distance)
+
+        if 1 in sensors:
+            print('Setting up sonar 1')
+            self.sonar1 = gpiozero.DistanceSensor(echo=self.echo_pin1, trigger=self.trigger_pin1, max_distance=self.max_distance)
+
+        if 2 in sensors:
+            print('Setting up sonar 2')
+            self.sonar2 = gpiozero.DistanceSensor(echo=self.echo_pin2, trigger=self.trigger_pin2, max_distance=self.max_distance)
 
     def distance(self, ):
         d1 = self.max_distance

@@ -191,3 +191,8 @@ Gets the 6 values of the onboard obstacle detection sensors (bumpers). This func
 6. right
 
 In theory, the sensors values range from 0 to 4095, with larger values indicating closer obstacles detected by the sensor. Typical values without obstacle range up to ~20.
+
+# Working with matrices
+
+Sensors return their data as 1D or 2D matrices (called arrays). You can get parts of these matrices (called slicing). You can also perform operations on these matrices. [Here](working_with_matrices.ipynb) are some examples are listed on how to work with matrices.
+
