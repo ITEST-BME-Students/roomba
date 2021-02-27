@@ -94,6 +94,7 @@ class LagDetector:
 
 class Microphone:
     def __init__(self):
+        print('Creating microphone')
         self.duration = 0.5
         self.sample_rate = 44100
         self.bands = make_frequency_bands()

@@ -6,17 +6,18 @@ from library import Camera
 from library import Device
 from library import Thermal
 from library import Sonar
-#from grove import adc_8chan_12bit
+from library import Whiskers
 
-mic = Microphone.Microphone()
-snr = Sonar.Sonar(sensors=[1, 2])
-thr = Thermal.Thermal()
-cam = Camera.Camera()
 
-thermal_data = thr.get_data(plot=True)
-#visual_data = cam.get_data(plot=True)
-#dist = snr.distance()
-#print(dist)
-#hat = adc_8chan_12bit.Pi_hat_adc()
+micrphone = Microphone.Microphone()
+#snr = Sonar.Sonar(sensors=[1, 2])
+#thermal = Thermal.Thermal()
+camera = Camera.Camera()
+whiskers = Whiskers.Whiskers()
+
+
+#thermal_data = thermal.get_data(plot=True)
+visual_data = camera.get_data(plot=True)
+whiskers.feel(plot=True)
 
 

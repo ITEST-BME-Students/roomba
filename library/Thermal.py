@@ -9,6 +9,7 @@ from library import RegionInterest
 
 class Thermal:
     def __init__(self):
+        print('Creating thermal camera')
         self.ic2 = busio.I2C(board.SCL, board.SDA, frequency=400000)
         self.mlx = adafruit_mlx90640.MLX90640(self.ic2)
         self.mlx.refresh_rate = adafruit_mlx90640.RefreshRate.REFRESH_2_HZ

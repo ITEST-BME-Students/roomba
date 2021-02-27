@@ -2,9 +2,10 @@ from library import RegionInterest
 import numpy
 from fractions import Fraction
 
-connect_to_robot = True
-connect_to_sonar = False
-connect_to_thermal = True
+
+# Whiskers
+whisker_channels = [0, 1]
+
 
 
 # GPOI nr

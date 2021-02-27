@@ -10,6 +10,7 @@ from fractions import Fraction
 
 class Camera:
     def __init__(self):
+        print('Creating video camera')
         self.w = Settings.camera_width
         self.h = Settings.camera_height
         self.centers = Settings.camera_roi

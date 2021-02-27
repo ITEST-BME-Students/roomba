@@ -173,6 +173,16 @@ sonar = Sonar.Sonar()
 left, right = sonar.distance()
 ```
 
+### Whiskers
+
+The robot whiskers are resistive sensors measuring the amount of bending. 
+
+```python
+from library import Whiskers
+whiskers = Whiskers.Whiskers()
+w1, w2 = whiskers.feel()
+```
+
 ## Additional commands
 
 + `my_robot.set_display(text)`
