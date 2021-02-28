@@ -1,7 +1,3 @@
----
-typora-copy-images-to: ./
----
-
 # Working with Pycharm
 
 ## What is Pycharm?
@@ -18,15 +14,15 @@ The image below shows the main elements of the Pycharm interface.
 
 + **Creating a new file** is done by right clicking `roomba` > `new file` > `python file`. This will bring up a dialog box asking you to name your file. This is shown in the image below. You should create your own files. Do not use my files to write your code. *These might be overwritten if I have to update the robot code. You can copy-paste code from my examples to your files.*
 
-  ![new_file](/home/dieter/Dropbox/PythonRepos/roomba/student_documentation/new_file.png)
+  ![new_file](new_file.png)
 
 + **Running code** is done by right clicking in the body of the file and selecting `run 'xxx'`, with `xxx` your filename. This is shown below.
 
   ![run_code](run_code.png)
 
-+ Stopping  and/or Re-running your code. 
++ **Stopping  and/or Re-running your code** can be done from the control that appear when running your code. If you run your code as indicated above, PyCharm will start a new console to run the program in. This console comes with its own control buttons, as shown below.
 
-
+![](rerun.png)
 
 # Dealing with issues
 
