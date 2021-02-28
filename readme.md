@@ -204,5 +204,8 @@ In theory, the sensors values range from 0 to 4095, with larger values indicatin
 
 # Working with matrices
 
-Sensors return their data as 1D or 2D matrices (called arrays). You can get parts of these matrices (called slicing). You can also perform operations on these matrices. [Here](working_with_matrices.ipynb) are some examples are listed on how to work with matrices.
+Sensors return their data as 1D or 2D matrices (called arrays). You can get parts of these matrices (called slicing). You can also perform operations on these matrices. [Here](student_documentation/working_with_matrices.ipynb) are some examples are listed on how to work with matrices.
 
+# Working with PyCharm
+
+Some pointers about working with PyCharm are given [here](student_documentation/working_with_pycharm.md).
