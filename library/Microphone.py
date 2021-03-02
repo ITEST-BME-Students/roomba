@@ -12,7 +12,7 @@ sounddevice.default.dtype = 'int16'
 
 def make_frequency_bands():
     bands = []
-    width = Settings.microphone_band_width
+    width = Settings.microphone_bandwidth
     a = Settings.microphone_band_centers[0]
     b = Settings.microphone_band_centers[1]
     c = Settings.microphone_band_centers[2]
@@ -107,6 +107,7 @@ class Microphone:
         data = sounddevice.rec(samples, samplerate=fs, blocking=True)
         data = data.transpose()
         data = numpy.flipud(data)  # To make left channel, channel 0
+        data = data - numpy.mean(data)
         if plot:
             mx = numpy.max(numpy.abs(data)) * 1.1
             pyplot.plot(data[0, :], alpha=0.5)
