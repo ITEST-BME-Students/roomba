@@ -5,7 +5,7 @@ from fractions import Fraction
 variation = 2
 
 # Whiskers
-whisker_channels = [0, 1, 3, 4]
+whisker_channels = [0, 1]
 
 # Sonar
 trigger_pin1 = 26  # GPOI nr

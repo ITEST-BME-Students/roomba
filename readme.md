@@ -175,12 +175,12 @@ left, right = sonar.distance()
 
 ### Whiskers
 
-The robot whiskers are resistive sensors measuring the amount of bending. 
+The robot whiskers are resistive sensors measuring the amount of bending. The variable `values` is a list of whisker values.
 
 ```python
 from library import Whiskers
 whiskers = Whiskers.Whiskers()
-w1, w2 = whiskers.feel()
+values = whiskers.feel()
 ```
 
 ## Additional commands
@@ -201,6 +201,17 @@ Gets the 6 values of the onboard obstacle detection sensors (bumpers). This func
 6. right
 
 In theory, the sensors values range from 0 to 4095, with larger values indicating closer obstacles detected by the sensor. Typical values without obstacle range up to ~20.
+
+
++ `my_robot.play_song(song)` 
+
+This command makes the robot play a song. The variable `song` should be a list made up of pairs of note numbers and durations. The note numbers recognized by the robot are listed in the table below. The note durations are specified as a fraction of a second. For example, the following makes the robot play note number 50 and 100 for 0.5 and 1.5 seconds.
+
+```python
+my_robot.play_song([50, 0.5, 100, 1.5])
+```
+
+![](student_documentation/notes.png) 
 
 # Working with matrices
 
