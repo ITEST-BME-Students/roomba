@@ -2,6 +2,8 @@ from pycreate2 import Create2
 from library import Ports
 from library import Misc
 from library import Kinematics
+from itertools import tee
+
 
 def get_bumper_data(sensor_data):
     a = sensor_data['light_bumper_left']
@@ -14,6 +16,19 @@ def get_bumper_data(sensor_data):
     return analog_data
 
 
+def preprocess_song(song):
+    new_song = []
+    n = len(song)
+    if n % 2 == 1: raise Exception('Songs must consist of pairs of notes and durations. You passed %i values.' % n)
+    notes = song[0::2]
+    durations = song[1::2]
+    for note, duration in zip(notes, durations):
+        duration64 = round(duration * 64)
+        new_song.append(note)
+        new_song.append(duration64)
+    return new_song
+
+
 class Roomba:
     def __init__(self, port=None):
         if port is None: port = Ports.get_port('FT231X')
@@ -21,6 +36,9 @@ class Roomba:
         self.robot.start()
         self.robot.safe()
         self.max_speed = 250
+
+    def reset(self):
+        self.robot.reset()
 
     def set_motors(self, left_speed, right_speed):
         left_speed = Misc.constrain(left_speed, -self.max_speed, self.max_speed)
@@ -73,21 +91,17 @@ class Roomba:
         decimal = int(string_value, 2)
         self.robot.led(led_bits=decimal, power_color=color, power_intensity=intensity)
 
+    def play_song(self, song):
+        song = preprocess_song(song)
+        self.robot.createSong(0, song)
+        self.robot.playSong(0)
+
 
 if __name__ == "__main__":
     import time
+    import Whiskers
 
     roomba = Roomba()
-    roomba.set_display('tet')
-    d = roomba.get_sensors()
-    roomba.kinematic(rot_speed=20)
-    #time.sleep(2)
-    roomba.turn(-180)
-    #roomba.stop()
-
-    # while True:
-    #     b = roomba.get_bumpers()
-    #     print(b)
-    #     time.sleep(0.25)
-    # result = roomba.robot.reset()
-    # print(result)
+    roomba.set_display('sd')
+    w = Whiskers.Whiskers()
+    w.feel(plot=True)

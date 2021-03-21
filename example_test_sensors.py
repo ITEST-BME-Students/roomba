@@ -11,7 +11,7 @@ from library import Whiskers
 
 micrphone = Microphone.Microphone()
 #snr = Sonar.Sonar(sensors=[1, 2])
-#thermal = Thermal.Thermal()
+thermal = Thermal.Thermal()
 camera = Camera.Camera()
 whiskers = Whiskers.Whiskers()
 
@@ -19,5 +19,5 @@ whiskers = Whiskers.Whiskers()
 #thermal_data = thermal.get_data(plot=True)
 visual_data = camera.get_data(plot=True)
 whiskers.feel(plot=True)
-
+thermal.get_data(plot=True)
 
