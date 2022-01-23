@@ -1,3 +1,25 @@
+# Raspberry use
+
+## Enabling the camera on the Raspberry Pi
+
+Run `sudo raspi-config` on the Raspberry Pi and enable the camera under `Interfacing Options`.
+
+## SPI interface for ADC chip
+
+Run `sudo raspi-config` on the Raspberry Pi and enable the SPI interface under `Interfacing Options`.
+
+## Connecting to remote python using raspberry
+
+`Pycharm > Settings > Project interpreter > Add intepreter > SSH Interpreter`
+
++ Host: ip address of Rpi on router
++ Username: per default, pi
++ Password: per default, raspberry
++ Interpreter: /usr/bin/python3
+
+Click `apply` and check whether under 'Deployment' the correct host is selected. If the remote files can not be found, the files can be uploaded manually by selecting the top level roomba project in pycharm, right clicking, and selecting `Deployment`. From the menu, select `upload to x@xx`.
+
+
 # Summary of flow control
 
 
@@ -91,7 +113,8 @@ More examples:
 ## Creating a robot
 
 ```python
-from library import Roomba
+from Roomba import Roomba
+
 my_robot = Roomba.Roomba()
 ```
 
@@ -134,7 +157,8 @@ Stops the robot
 The camera on the robot has an 160 degree field of view. The following code gets data from the camera. It returns values from a number of areas within the 160 degree field of the camera. Depending on the settings, the data can be RGB data or grayscale data (or any combination of the camera's RGB values).
 
 ```python
-from library import Camera
+from Roomba import Camera
+
 camera = Camera.Camera()
 data = camera.look()
 ```
@@ -144,7 +168,8 @@ data = camera.look()
 The thermal camera on the robot has an 110 degree field of view. The following code gets data from the thermal camera. It returns values from a number of areas within the field of the camera. The data is in degrees celcius.
 
 ```python
-from library import Thermal
+from Roomba import Thermal
+
 thermal = Thermal.Thermal()
 data = thermal.look()
 ```
@@ -158,27 +183,32 @@ The robot features two micophones. The following code returns data from the micr
 2. The estimated interaural time difference (left leading sounds produce negative values)
 
 ```python
-from library import Microphone
+from Roomba import Microphone
+
 microphone = Microphone.Microphone()
 loudness_difference, time_difference = microphone.listen()
 ```
 
 ### Sonar
 
+###todo: express this in terms of sonar 1 and sonar 2 on the board
 The robot's sonar sensors measure the distance to the nearest object that returns a detectable echo. The following code gets the distance as detected by the two sensors.
 
 ```python
-from library import Sonar
+from Roomba import Sonar
+
 sonar = Sonar.Sonar()
 left, right = sonar.distance()
 ```
 
 ### Whiskers
 
+###todo: express this in terms of whisker 1 and whisker 2 on the board
 The robot whiskers are resistive sensors measuring the amount of bending. The variable `values` is a list of whisker values.
 
 ```python
-from library import Whiskers
+from Roomba import Whiskers
+
 whiskers = Whiskers.Whiskers()
 values = whiskers.feel()
 ```

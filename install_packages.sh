@@ -1,9 +1,19 @@
+#
+# SCRIPT TO INSTALL PACKAGES ON THE LOCAL MACHINE AND ON THE RASPBERRY PI
+#
+
+
 #sudo chmod +x install_packages.sh
 #./install_packages.sh
+
+# --? For the pi camera
+
+sudo apt-get install python-picamera python3-picamera
 
 # Required python packages -->
 
 pip3 install adafruit-circuitpython-mlx90640
+pip3 install adafruit-circuitpython-mcp3xxx
 pip3 install sounddevice
 pip3 install matplotlib
 

@@ -1,3 +1,26 @@
+# Raspberry Pi
+
+## Command line based host rename
+
+Step 1: ```sudo nano /etc/hosts```
+Step 2:  ```sudo nano /etc/hostname```
+
+
+## Edit wpa_supplicant to connect to wifi
+
+File to edit : ```rootfs/etc/wpa_supplicant.conf```
+
+Lines to add:
+
+```
+network={
+	ssid="bme_net"
+	psk="fruitfly"
+	key_mgmt=WPA-PSK
+}
+```
+
+
 # Roomba
 
 ## iRobot Create  2 Open Interface
