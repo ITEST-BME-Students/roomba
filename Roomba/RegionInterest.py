@@ -80,7 +80,8 @@ class Regions:
             matrix[x==1] = i
             i = i + 1
         pyplot.imshow(matrix, cmap='Set3')
-        #pyplot.colorbar()
+        pyplot.xlabel('X pixel number')
+        pyplot.ylabel('Y pixel number')
         pyplot.title('Regions')
         ax = pyplot.gca()
         ax.set_aspect('equal')

@@ -4,7 +4,7 @@ from Roomba import Settings
 
 
 class Sonar:
-    def __init__(self, sensors=[1,2]): #todo: expand to use max of 4 sensors
+    def __init__(self, sensors=[1,2]):
         print('Creating sonar')
         self.max_distance = 3
         self.echo_pin1 = Settings.echo_pin1
