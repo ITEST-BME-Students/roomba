@@ -9,13 +9,14 @@ while True:
     distances = sonar_sensors.distance()
     print(distances)
     time.sleep(0.5)
-
     left = distances[0]
     right = distances[1]
+    print(left, right)
 
-    if left < right:
-        robot.kinematic(rot_speed=20)
+    if min(left, right) < 0.25:
+        robot.stop()
     else:
-        robot.kinematic(rot_speed=-20)
+        robot.kinematic(lin_speed=20)
+
 
 

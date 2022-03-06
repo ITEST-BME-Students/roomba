@@ -26,11 +26,15 @@ echo_pin4 = 5  # GPOI nr
 thermal_fov = 110  # width of FOV in angles
 # Rois is in center center angle h, center angle_v, size in angles
 thermal_roi = [[-50, 0, 10],
+               [-40, 0, 10],
+               [-30, 0, 10],
                [-20, 0, 10],
                [-10, 0, 10],
                [0, 0, 10],
                [10, 0, 10],
                [20, 0, 10],
+               [30, 0, 10],
+               [40, 0, 10],
                [50, 0, 10]]
 
 # Microphone
@@ -44,7 +48,7 @@ camera_fov = 160  # width of FOV in angles
 camera_width = 160
 camera_height = 80
 camera_iso = 400  # 400 higher iso increases brightness
-camera_frame_rate = Fraction(6, 1)  # frames per second, min = 1/6. Lower frame rate = brighter
+camera_frame_rate = Fraction(50, 1)  # frames per second, min = 1/6. Lower frame rate = brighter
 
 camera_gain = 1  # software gain applied after capturing the image
 camera_channel_matrix = numpy.eye(3)
