@@ -1,10 +1,11 @@
-import adafruit_mlx90640
+from Roomba import adafruit_mlx90640
 import board
 import busio
 import numpy
 from Roomba import Settings
 from matplotlib import pyplot
 from Roomba import RegionInterest
+
 
 
 class Thermal:
@@ -15,6 +16,8 @@ class Thermal:
         self.mlx.refresh_rate = adafruit_mlx90640.RefreshRate.REFRESH_2_HZ
         self.msg = ("MLX addr detected on I2C", [hex(i) for i in self.mlx.serial_number])
         self.frame = [0] * 768
+        self.lower_bound = 20
+        self.upper_bound = 40
 
         self.centers = Settings.thermal_roi
         self.fov = Settings.thermal_fov
@@ -26,6 +29,8 @@ class Thermal:
         data = numpy.array(self.frame)
         data = data.reshape((24, 32))
         data = numpy.fliplr(data)
+        data[data < self.lower_bound] = self.lower_bound
+        data[data> self.upper_bound] = self.upper_bound
         if plot:
             pyplot.imshow(data)
             pyplot.colorbar()

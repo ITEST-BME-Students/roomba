@@ -38,8 +38,7 @@ thermal_roi = [[-50, 0, 10],
                [50, 0, 10]]
 
 # Microphone
-microphone_band_centers = [500, 20000, 10]  # start, end, n
-microphone_bandwidth = 1000
+microphone_iid_bands = [4000, 8000, 20, 1000]  # start, end, n, width
 microphone_itd_band = [200, 4000]
 #microphone_itd_band = [7000, 10000]
 

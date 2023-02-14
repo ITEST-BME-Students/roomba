@@ -12,11 +12,11 @@ sounddevice.default.dtype = 'int16'
 
 def make_frequency_bands():
     bands = []
-    width = Settings.microphone_bandwidth
-    a = Settings.microphone_band_centers[0]
-    b = Settings.microphone_band_centers[1]
-    c = Settings.microphone_band_centers[2]
-    centers = numpy.linspace(a, b, c)
+    start = Settings.microphone_iid_bands[0]
+    end = Settings.microphone_iid_bands[1]
+    n = Settings.microphone_iid_bands[2]
+    width = Settings.microphone_iid_bands[3]
+    centers = numpy.linspace(start, end, n)
     for center in centers:
         low = int(center - width / 2)
         high = int(center + width / 2)
@@ -135,7 +135,7 @@ class Microphone:
             pyplot.plot(left_values)
             pyplot.plot(right_values)
             pyplot.legend(['Left', 'Right'])
-            pyplot.xlabel('Frequency band')
+            pyplot.xlabel('Frequency (kHz))')
             pyplot.ylabel('Amplitude')
             pyplot.title('Spectrum')
             pyplot.subplot(2, 1, 2)
